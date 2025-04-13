@@ -14,9 +14,7 @@ import java.util.Optional;
 @RequestMapping("/api/clienti")
 public class ClienteController {
 
-    public ClienteController() {
-        System.out.println("LOG: ClienteController inizializzato");
-    }
+
 
     @Autowired
     private ClienteRepository clienteRepository;

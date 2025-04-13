@@ -23,6 +23,10 @@ public class Utente extends Persona implements GestoreServizi {
     @JsonProperty("dataAssunzione")
     protected LocalDate dataAssunzione;
 
+    public Utente() {//per json con conjackson
+        super();
+    }
+
     public Utente(String nome, String cognome, int eta, int telefono, String username, String password, String ruolo, String dataAssunzione) {
         super(nome, cognome, eta, telefono);
         this.username = username;

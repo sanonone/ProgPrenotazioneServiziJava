@@ -1,6 +1,5 @@
 package com.example.spring.spring.model.persona;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
