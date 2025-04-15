@@ -48,7 +48,7 @@ public class SerGiornalieroController {
         try{
             Utente ut = objectMapper.readValue(utente, Utente.class);
             ServiziGiornalieri nuovoServizio = objectMapper.readValue(servizio, ServiziGiornalieri.class);
-            ut.creaServizioGiornaliero(nuovoServizio);
+            //ut.creaServizioGiornaliero(nuovoServizio);
             return new ResponseEntity<>(nuovoServizio, HttpStatus.CREATED);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
