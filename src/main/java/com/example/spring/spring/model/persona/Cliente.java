@@ -28,6 +28,13 @@ public class Cliente extends Persona {
     }
     */
 
+
+    //prenotazione servizio
+    //annulla prenotazione servizio
+    //servizi prenotati
+    //totale da pagare
+
+
     @Override
     public String toString() {
         return "Cliente{" +

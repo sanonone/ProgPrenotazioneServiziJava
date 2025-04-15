@@ -1,10 +1,11 @@
 package com.example.spring.spring.model.persona;
 
+import com.example.spring.spring.model.servizio.ServiziGiornalieri;
+import com.example.spring.spring.mongoHelper.SerGiornalieroRepository;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.example.spring.spring.gestori.GestoreServizi;
+import com.example.spring.spring.gestori.GestoreServiziGiornalieri;
 import com.example.spring.spring.model.servizio.Servizi;
 
 import java.time.LocalDate;
@@ -13,7 +14,7 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @Document(collection = "utenti")
-public class Utente extends Persona implements GestoreServizi {
+public class Utente extends Persona implements GestoreServiziGiornalieri {
     @JsonProperty("username")
     private String username;
     @JsonProperty("password")
@@ -22,6 +23,8 @@ public class Utente extends Persona implements GestoreServizi {
     protected String ruolo;
     @JsonProperty("dataAssunzione")
     protected LocalDate dataAssunzione;
+
+    SerGiornalieroRepository serGiornalieroRepository;
 
     public Utente() {//per json con conjackson
         super();
@@ -45,29 +48,50 @@ public class Utente extends Persona implements GestoreServizi {
     }
 
     @Override
-    public void creaServizio(Servizi servizio) {
+    public ServiziGiornalieri creaServizioGiornaliero(String nome, String descrizione, double prezzo, int disponibilita) {
         // ... implementazione ...
+        ServiziGiornalieri servizio = new ServiziGiornalieri(nome, descrizione, prezzo, disponibilita);
+        return servizio;
+        //serGiornalieroRepository.save(servizio);
+
     }
 
     @Override
-    public List<Servizi> visualizzaServiziCreati() {
+    public List<ServiziGiornalieri> visualizzaServiziGiornalieriCreati() {
         // ... implementazione ...
-        return null;
+        List<ServiziGiornalieri> servizi=serGiornalieroRepository.findAll();
+        return servizi;
     }
 
     @Override
-    public void modificaServizio(Servizi servizio) {
+    public void modificaServizioGiornaliero(ServiziGiornalieri servizio) {
         // ... implementazione ...
+        ServiziGiornalieri servizioDaModificare = serGiornalieroRepository.findById(servizio.getId()).orElse(null);
+        if(servizioDaModificare != null){
+            serGiornalieroRepository.save(servizio);
+        }
+        else{
+            System.out.println("Servizio da modificare non trovato");
+        }
     }
 
     @Override
-    public void eliminaServizio(Servizi servizio) {
+    public void eliminaServizioGiornaliero(String id) {
         // ... implementazione ...
+        if(serGiornalieroRepository.existsById(id)) {
+            serGiornalieroRepository.deleteById(id);
+            System.out.println("Servizio eliminato");
+        }
+        else{
+            System.out.println("Servizio non trovato");
+        }
     }
 
     @Override
-    public void prenotaServizio() {
+    public ServiziGiornalieri servizioGiornalieroById(String id) {
         // ... implementazione ...
+        ServiziGiornalieri servizio = serGiornalieroRepository.findById(id).orElse(null);
+        return servizio;
     }
 
 }

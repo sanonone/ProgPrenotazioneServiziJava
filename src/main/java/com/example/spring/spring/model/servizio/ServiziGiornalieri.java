@@ -1,16 +1,20 @@
 package com.example.spring.spring.model.servizio;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ServiziGiornalieri extends Servizi {
 
+    @JsonProperty("disponibilita")
     private int disponibilita;
+    @JsonProperty("prenotazioniPerData")
     protected Map<LocalDate, Integer> prenotazioniPerData;
 
-    public ServiziGiornalieri(String id, String nome, String descrizione, int quantita, double prezzo, int disponibilita) {
-        super(id, nome, descrizione, quantita, prezzo);
+    public ServiziGiornalieri(String nome, String descrizione, double prezzo, int disponibilita) {
+        super(nome, descrizione, prezzo);
         this.disponibilita = disponibilita;
         this.prenotazioniPerData = new HashMap<>();//istanzia la mappa dell'interfaccia Map di prenotazioniPerData
     }
@@ -47,5 +51,15 @@ public class ServiziGiornalieri extends Servizi {
             dataCorrente = dataCorrente.plusDays(1);
         }
     }
+
+    //salva servizio
+
+    //modifica servizio
+
+    //elimina servizio
+
+    //visualizza servizi giornalieri
+
+    //cerca servizio per id
 }
 

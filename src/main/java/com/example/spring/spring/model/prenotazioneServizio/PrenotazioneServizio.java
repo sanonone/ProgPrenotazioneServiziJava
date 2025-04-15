@@ -30,4 +30,6 @@ public class PrenotazioneServizio {
         this.dataGestione = dataGestione;
     }
 
+
+
 }

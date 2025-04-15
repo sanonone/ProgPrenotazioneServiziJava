@@ -11,4 +11,5 @@ public interface ClienteRepository extends MongoRepository<Cliente, String> {
     Optional<Cliente> findByEmail(String email);
     List<Cliente> findByNomeAndCognome(String nome, String cognome);
     List<Cliente> findByNomeLikeIgnoreCase(String nome);
+
 }

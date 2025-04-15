@@ -1,23 +1,26 @@
 package com.example.spring.spring.model.servizio;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "servizi")
 public abstract class Servizi {
 
+    @JsonProperty("id")
     @Id
     protected String id;
+    @JsonProperty("nome")
     protected String nome;
+    @JsonProperty("descrizione")
     protected String descrizione;
-    protected int quantita;
+    @JsonProperty("prezzo")
     protected double prezzo;
 
-    public Servizi(String id, String nome, String descrizione, int quantita, double prezzo) {
-        this.id = id;
+    public Servizi(String nome, String descrizione, double prezzo) {
+        //this.id = id;
         this.nome = nome;
         this.descrizione = descrizione;
-        this.quantita = quantita;
         this.prezzo = prezzo;
     }
     // Getters e Setters
@@ -42,16 +45,14 @@ public abstract class Servizi {
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
     }
-    public int getQuantita() {
-        return quantita;
-    }
-    public void setQuantita(int quantita) {
-        this.quantita = quantita;
-    }
     public double getPrezzo() {
         return prezzo;
     }
     public void setPrezzo(double prezzo) {
         this.prezzo = prezzo;
     }
+
+    //lista prenotazioni
+    //lista clienti
+    //
 }
