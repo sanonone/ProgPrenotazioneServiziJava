@@ -14,7 +14,7 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @Document(collection = "utenti")
-public class Utente extends Persona implements GestoreServiziGiornalieri {
+public class Utente extends Persona {
     @JsonProperty("username")
     private String username;
     @JsonProperty("password")
@@ -47,6 +47,7 @@ public class Utente extends Persona implements GestoreServiziGiornalieri {
 
     }
 
+    /*
     @Override
     public ServiziGiornalieri creaServizioGiornaliero(String nome, String descrizione, double prezzo, int disponibilita) {
         // ... implementazione ...
@@ -55,6 +56,8 @@ public class Utente extends Persona implements GestoreServiziGiornalieri {
         //serGiornalieroRepository.save(servizio);
 
     }
+
+
 
     @Override
     public List<ServiziGiornalieri> visualizzaServiziGiornalieriCreati() {
@@ -93,5 +96,6 @@ public class Utente extends Persona implements GestoreServiziGiornalieri {
         ServiziGiornalieri servizio = serGiornalieroRepository.findById(id).orElse(null);
         return servizio;
     }
+*/
 
 }

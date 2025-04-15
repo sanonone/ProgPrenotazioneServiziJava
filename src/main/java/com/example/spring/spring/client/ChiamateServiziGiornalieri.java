@@ -1,7 +1,6 @@
 package com.example.spring.spring.client;
 
 import com.example.spring.spring.model.persona.Utente;
-import com.example.spring.spring.model.servizio.ServiziGiornalieri;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -26,25 +25,24 @@ public class ChiamateServiziGiornalieri {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
-    public void createServizioGiornaliero(Utente ut){
+    public void creaUtente(){
         try{
-            System.out.println("\nChiamata a POST " + SERVER_URL + "/serviziGiornalieri/create");
-            ServiziGiornalieri servizio = new ServiziGiornalieri("noleggio bici", "noleggio biciclette per uno o più giorni", 10.00,20);
-            System.out.println("Invio questo object: "+servizio);
+            System.out.println("\nChiamata a POST " + SERVER_URL + "/utenti/create");
+            Utente nuovoUtente = new Utente("Pippo", "Rossi", 23, 348578387,"pippo","pw","receptionist","02-02-2021");
+            System.out.println("Invio questo object: "+nuovoUtente);
 
             //ObjectMapper objectMapper = new ObjectMapper();
             try {
-                String servizioJson = objectMapper.writeValueAsString(servizio);
-                String utenteJson = objectMapper.writeValueAsString(ut);
-                System.out.println("il servizio json è: "+servizioJson);
+                String utenteJson = objectMapper.writeValueAsString(nuovoUtente);
+                System.out.println("l'utente è: "+utenteJson);
                 // Ora 'clienteJson' contiene la rappresentazione JSON dell'oggetto Cliente
                 // che puoi inviare al server.
 
 
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create(SERVER_URL + "/serviziGiornalieri/create")) // Sostituisci con l'URL del tuo endpoint
+                        .uri(URI.create(SERVER_URL + "/utenti/create")) // Sostituisci con l'URL del tuo endpoint
                         .header("Content-Type", "application/json")
-                        .POST(HttpRequest.BodyPublishers.ofString(servizioJson))
+                        .POST(HttpRequest.BodyPublishers.ofString(utenteJson))
                         .build();
 
                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());

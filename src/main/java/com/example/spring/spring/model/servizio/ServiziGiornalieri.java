@@ -1,12 +1,15 @@
 package com.example.spring.spring.model.servizio;
 
+import com.example.spring.spring.interfacce.Prenotabile;
+import com.example.spring.spring.model.persona.Cliente;
+import com.example.spring.spring.model.prenotazioneServizio.PrenotazioneServizio;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ServiziGiornalieri extends Servizi {
+public class ServiziGiornalieri extends Servizi implements Prenotabile {
 
     @JsonProperty("disponibilita")
     private int disponibilita;
@@ -52,14 +55,24 @@ public class ServiziGiornalieri extends Servizi {
         }
     }
 
-    //salva servizio
+    @Override
+    public boolean prenota(PrenotazioneServizio prenotazione) {
+        boolean disponibile = verificaDisponibilita(
+                prenotazione.getDataInizio(),
+                prenotazione.getNumeroGiorni(),
+                prenotazione.getQuantitaPrenotata()
+        );
 
-    //modifica servizio
+        if (disponibile) {
+            confermaPrenotazione(
+                    prenotazione.getDataInizio(),
+                    prenotazione.getNumeroGiorni(),
+                    prenotazione.getQuantitaPrenotata()
+            );
+            return true;
+        }
 
-    //elimina servizio
-
-    //visualizza servizi giornalieri
-
-    //cerca servizio per id
+        return false;
+    }
 }
 

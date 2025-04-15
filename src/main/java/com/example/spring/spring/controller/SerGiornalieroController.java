@@ -3,8 +3,10 @@ package com.example.spring.spring.controller;
 import com.example.spring.spring.model.persona.Cliente;
 import com.example.spring.spring.model.persona.Utente;
 import com.example.spring.spring.model.servizio.ServiziGiornalieri;
+import com.example.spring.spring.mongoHelper.SerGiornalieroRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,63 +17,50 @@ import java.util.List;
 @RequestMapping("/api/serviziGiornalieri")
 public class SerGiornalieroController {
 
-    @GetMapping
-    public ResponseEntity<List<ServiziGiornalieri>> getAllServiziGiornalieri(@PathVariable String utente) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            Utente ut = objectMapper.readValue(utente, Utente.class);
-            List<ServiziGiornalieri> servizi = ut.visualizzaServiziGiornalieriCreati();
-            return new ResponseEntity<>(servizi, HttpStatus.OK);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    @Autowired
+    private SerGiornalieroRepository serGiornalieroRepository;
 
+    @GetMapping
+    public ResponseEntity<List<ServiziGiornalieri>> getAllServiziGiornalieri() {
+        return new ResponseEntity<>(serGiornalieroRepository.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ServiziGiornalieri> getServizioGiornalieroById(@PathVariable String id, @PathVariable String utente) {
+    public ResponseEntity<ServiziGiornalieri> getServiziGiornalieriById(@PathVariable String id) {
         System.out.println("LOG: Chiamato endpoint GET /api/serviziGiornalieri/{id}");
-        ObjectMapper objectMapper = new ObjectMapper();
-        try{
-            Utente ut = objectMapper.readValue(utente, Utente.class);
-            ServiziGiornalieri servizio = ut.servizioGiornalieroById(id);
+        ServiziGiornalieri servizio = serGiornalieroRepository.findById(id).orElse(null);
+        if (servizio != null) {
             return new ResponseEntity<>(servizio, HttpStatus.OK);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ServiziGiornalieri> createServizioGiornaliero(@RequestBody String servizio, @PathVariable String utente){
+    public ResponseEntity<ServiziGiornalieri> createServizioGiornaliero(@RequestBody String servizio) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         System.out.println("LOG: Chiamato endpoint POST /api/serviziGiornalieri/create");
-        try{
-            Utente ut = objectMapper.readValue(utente, Utente.class);
-            ServiziGiornalieri nuovoServizio = objectMapper.readValue(servizio, ServiziGiornalieri.class);
-            //ut.creaServizioGiornaliero(nuovoServizio);
-            return new ResponseEntity<>(nuovoServizio, HttpStatus.CREATED);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        System.out.println("LOG: Ricevuto oggetto: " + servizio.toString()); // Stampa l'oggetto ricevuto
 
+        System.out.println("Servizio ricevuto: " + servizio.toString());
+        ServiziGiornalieri nuovoServizio = objectMapper.readValue(servizio, ServiziGiornalieri.class);
+        serGiornalieroRepository.save(nuovoServizio);
+        //gestoreClienti.creaCliente(nuovoCliente);
+
+        return new ResponseEntity<>(nuovoServizio, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteServizioGiornaliero(@PathVariable String id, @PathVariable String utente) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try{
-            Utente ut = objectMapper.readValue(utente, Utente.class);
-            ServiziGiornalieri servizioDaEliminare = ut.servizioGiornalieroById(id);
-            if(servizioDaEliminare!=null){
-                ut.eliminaServizioGiornaliero(id);
-                return new ResponseEntity<>("Servizio eliminato con successo", HttpStatus.OK);
-            }
-            else {
-                return new ResponseEntity<>("Servizio non trovato", HttpStatus.NOT_FOUND);
-            }
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+    public ResponseEntity<String> deleteServizioGiornaliero(@PathVariable String id) {
+        if (!serGiornalieroRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
         }
+        serGiornalieroRepository.deleteById(id);
+        return ResponseEntity.noContent().build(); // 204
 
     }
+
+
+
+
 }
