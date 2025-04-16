@@ -17,6 +17,10 @@ public abstract class Servizi {
     @JsonProperty("prezzo")
     protected double prezzo;
 
+    public Servizi() {
+        
+    }
+
     public Servizi(String nome, String descrizione, double prezzo) {
         //this.id = id;
         this.nome = nome;

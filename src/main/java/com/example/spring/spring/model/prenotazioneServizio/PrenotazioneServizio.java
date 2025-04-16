@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class PrenotazioneServizio {
 
@@ -31,18 +33,31 @@ public class PrenotazioneServizio {
     @JsonProperty("dataGestione")
     private LocalDate dataGestione;
 
-    public PrenotazioneServizio(String id, String idServizio, String idCliente, String nomeServizio, String nomeCliente, String cognomeCliente, LocalDate dataInizio, int numeroGiorni, int quantitaPrenotata, double prezzoTotale, LocalDate dataGestione) {
-        this.id = id;
+    public PrenotazioneServizio() {
+        // Costruttore vuoto richiesto da Spring Data
+    }
+
+    public PrenotazioneServizio(String idServizio, String idCliente, String nomeServizio, String nomeCliente, String cognomeCliente, String dataInizio, int numeroGiorni, int quantitaPrenotata, double prezzoTotale) {
+
         this.idServizio = idServizio;
         this.idCliente = idCliente;
         this.nomeServizio = nomeServizio;
         this.nomeCliente = nomeCliente;
         this.cognomeCliente = cognomeCliente;
-        this.dataInizio = dataInizio;
+        //this.dataInizio = dataInizio;
         this.numeroGiorni = numeroGiorni;
         this.quantitaPrenotata = quantitaPrenotata;
         this.prezzoTotale = prezzoTotale;
-        this.dataGestione = dataGestione;
+        this.dataGestione = LocalDate.now();
+
+        try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            this.dataInizio = LocalDate.parse(dataInizio, formatter);
+            System.out.println("la data è: "+dataInizio);
+
+        } catch (DateTimeParseException e) {
+            System.out.println("Errore nella conversione della data: " + e.getMessage());
+        }
     }
 
 

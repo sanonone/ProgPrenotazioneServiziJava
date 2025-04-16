@@ -6,6 +6,8 @@ import com.example.spring.spring.model.servizio.ServiziGiornalieri;
 import com.example.spring.spring.mongoHelper.SerGiornalieroRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +41,10 @@ public class SerGiornalieroController {
     @PostMapping("/create")
     public ResponseEntity<ServiziGiornalieri> createServizioGiornaliero(@RequestBody String servizio) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
+        // Configura l'ObjectMapper per gestire correttamente le date
+        //altrimenti avevo errore durante la conversione in JSON
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         System.out.println("LOG: Chiamato endpoint POST /api/serviziGiornalieri/create");
         System.out.println("LOG: Ricevuto oggetto: " + servizio.toString()); // Stampa l'oggetto ricevuto
 
@@ -53,10 +59,12 @@ public class SerGiornalieroController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteServizioGiornaliero(@PathVariable String id) {
         if (!serGiornalieroRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
+            //return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         serGiornalieroRepository.deleteById(id);
-        return ResponseEntity.noContent().build(); // 204
+        //return ResponseEntity.noContent().build(); // 204
+        return new ResponseEntity<>(HttpStatus.OK);
 
     }
 

@@ -9,6 +9,8 @@ import java.time.Duration;
 
 import com.example.spring.spring.model.Messaggio;
 import com.example.spring.spring.model.persona.Cliente;
+import com.example.spring.spring.model.prenotazioneServizio.PrenotazioneServizio;
+import com.example.spring.spring.model.servizio.ServiziGiornalieri;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
@@ -31,6 +33,8 @@ public class SimpleJavaClient {
 
         ChiamateCliente chiamateCliente = new ChiamateCliente();
         ChiamateUtente chiamateUtente = new ChiamateUtente();
+        ChiamateServiziGiornalieri chiamateServiziGiornalieri = new ChiamateServiziGiornalieri();
+        ChiamatePrenotazioneGiornaliera chiamatePrenotazioneGiornaliera = new ChiamatePrenotazioneGiornaliera();
 
         try {
 
@@ -48,6 +52,14 @@ public class SimpleJavaClient {
             chiamateUtente.deleteUtente("67fe64883a8df7041bc2bbdb");
              */
 
+            /*
+            chiamateServiziGiornalieri.creaServizioGiornaliero(new ServiziGiornalieri("test", "motorini da noleggiare per l'intero giorno o più", 20.00, 10));
+            chiamateServiziGiornalieri.getAllServiziGiornalieri();
+            chiamateServiziGiornalieri.getServiziGiornalieriById("67ff9f76d550d46d1e8ed1e4");
+            chiamateServiziGiornalieri.deleteServizioGiornaliero("67ffa71ed550d46d1e8ed1e8");
+             */
+
+            chiamatePrenotazioneGiornaliera.creaPrenotazioneGiornaliera(new PrenotazioneServizio("67ffa52dd550d46d1e8ed1e5", "67fe41d2e1c5dc459f047a22", "Noleggio motorino", "Mario", "Rossi", "15/01/2026", 3, 1,10));
 
 
         } catch (Exception e) {

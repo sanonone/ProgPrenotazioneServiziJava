@@ -1,6 +1,7 @@
 package com.example.spring.spring.client;
 
 import com.example.spring.spring.model.persona.Utente;
+import com.example.spring.spring.model.prenotazioneServizio.PrenotazioneServizio;
 import com.example.spring.spring.model.servizio.ServiziGiornalieri;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,7 +16,7 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.List;
 
-public class ChiamateServiziGiornalieri {
+public class ChiamatePrenotazioneGiornaliera {
 
     private static final String SERVER_URL = "http://localhost:8080/api";
 
@@ -33,24 +34,28 @@ public class ChiamateServiziGiornalieri {
 
 
 
-    public void creaServizioGiornaliero(ServiziGiornalieri nuovoServizioGiornaliero){
+    public void creaPrenotazioneGiornaliera(PrenotazioneServizio nuovoPrenotazioneServizioGiornaliero){
         try{
-            System.out.println("\nChiamata a POST " + SERVER_URL + "/utenti/create");
+            System.out.println("\nChiamata a POST " + SERVER_URL + "/prenotazioniServiziGiornalieri/create");
 
-            System.out.println("Invio questo object: "+nuovoServizioGiornaliero);
+            System.out.println("Invio questo object: "+nuovoPrenotazioneServizioGiornaliero);
 
             //ObjectMapper objectMapper = new ObjectMapper();
+            // Configura l'ObjectMapper per gestire correttamente le date
+            //altrimenti avevo errore durante la conversione in JSON
+            objectMapper.registerModule(new JavaTimeModule());
+            objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
             try {
-                String serJson = objectMapper.writeValueAsString(nuovoServizioGiornaliero);
-                System.out.println("il servizio è: "+serJson);
+                String prenotazioneSerJson = objectMapper.writeValueAsString(nuovoPrenotazioneServizioGiornaliero);
+                System.out.println("la prenotazione è: "+prenotazioneSerJson);
                 // Ora 'clienteJson' contiene la rappresentazione JSON dell'oggetto Cliente
                 // che puoi inviare al server.
 
 
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create(SERVER_URL + "/serviziGiornalieri/create")) // Sostituisci con l'URL del tuo endpoint
+                        .uri(URI.create(SERVER_URL + "/prenotazioniServiziGiornalieri/create")) // Sostituisci con l'URL del tuo endpoint
                         .header("Content-Type", "application/json")
-                        .POST(HttpRequest.BodyPublishers.ofString(serJson))
+                        .POST(HttpRequest.BodyPublishers.ofString(prenotazioneSerJson))
                         .build();
 
                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -146,5 +151,4 @@ public class ChiamateServiziGiornalieri {
             System.out.println("Errore nella creazione del cliente: " + e.getMessage());
         }
     }
-
 }

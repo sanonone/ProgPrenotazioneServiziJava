@@ -16,6 +16,12 @@ public class ServiziGiornalieri extends Servizi implements Prenotabile {
     @JsonProperty("prenotazioniPerData")
     protected Map<LocalDate, Integer> prenotazioniPerData;
 
+    public ServiziGiornalieri() {
+        super();
+        this.disponibilita = 0;
+        this.prenotazioniPerData = new HashMap<>();
+    }
+
     public ServiziGiornalieri(String nome, String descrizione, double prezzo, int disponibilita) {
         super(nome, descrizione, prezzo);
         this.disponibilita = disponibilita;
@@ -30,10 +36,12 @@ public class ServiziGiornalieri extends Servizi implements Prenotabile {
         while (!dataCorrente.isAfter(dataFine)) {
             int prenotazioni = prenotazioniPerData.getOrDefault(dataCorrente, 0);
             if (prenotazioni+quantitaPrenotata > disponibilita) {
+                System.out.println("Non disponibile per questa data: "+dataCorrente);
                 return false; // Non disponibile per questa data
             }
             dataCorrente = dataCorrente.plusDays(1);
         }
+        System.out.println("Disponibile per tutte le date");
         return true; // Disponibile per tutte le date
     }
 
