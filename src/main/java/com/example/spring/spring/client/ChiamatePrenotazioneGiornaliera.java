@@ -53,7 +53,7 @@ public class ChiamatePrenotazioneGiornaliera {
 
 
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create(SERVER_URL + "/prenotazioniServiziGiornalieri/create")) // Sostituisci con l'URL del tuo endpoint
+                        .uri(URI.create(SERVER_URL + "/prenotazioniServiziGiornalieri/create")) 
                         .header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(prenotazioneSerJson))
                         .build();

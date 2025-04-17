@@ -1,5 +1,6 @@
 package com.example.spring.spring.model.prenotazioneServizio;
 
+import com.example.spring.spring.model.servizio.TimeInterval;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 
@@ -7,7 +8,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-public class PrenotazioneServizio extends Prenotazione {
+public class PrenotazioneServizioOrario extends Prenotazione {
 
     @JsonProperty("dataInizio")
     private LocalDate dataInizio;
@@ -17,17 +18,18 @@ public class PrenotazioneServizio extends Prenotazione {
     private int quantitaPrenotata;
     @JsonProperty("dataGestione")
     private LocalDate dataGestione;
+    @JsonProperty("fasciaOraria")
+    private TimeInterval fasciaOraria;
 
-    public PrenotazioneServizio() {
+    public PrenotazioneServizioOrario() {
         // Costruttore vuoto richiesto da Spring Data
     }
 
-    public PrenotazioneServizio(String idServizio, String idCliente, String nomeServizio, String nomeCliente, String cognomeCliente, String dataInizio, int numeroGiorni, int quantitaPrenotata, double prezzoTotale) {
-
+    public PrenotazioneServizioOrario(String idServizio, String idCliente, String nomeServizio, String nomeCliente, String cognomeCliente, String dataInizio, int numeroGiorni, int quantitaPrenotata, double prezzoTotale, TimeInterval fasciaOraria) {
         super(idServizio, idCliente, nomeServizio, nomeCliente, cognomeCliente, prezzoTotale);
         this.numeroGiorni = numeroGiorni;
         this.quantitaPrenotata = quantitaPrenotata;
-        this.dataGestione = LocalDate.now();
+        this.fasciaOraria = fasciaOraria;
 
         try{
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -37,23 +39,5 @@ public class PrenotazioneServizio extends Prenotazione {
         } catch (DateTimeParseException e) {
             System.out.println("Errore nella conversione della data: " + e.getMessage());
         }
-    }
-
-
-
-    public LocalDate getDataInizio() {
-        return dataInizio;
-    }
-
-    public int getNumeroGiorni() {
-        return numeroGiorni;
-    }
-
-    public int getQuantitaPrenotata() {
-        return quantitaPrenotata;
-    }
-
-    public LocalDate getDataGestione() {
-        return dataGestione;
     }
 }

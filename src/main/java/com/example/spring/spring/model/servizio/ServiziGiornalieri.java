@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ServiziGiornalieri extends Servizi implements Prenotabile {
+public class ServiziGiornalieri extends Servizi implements Prenotabile<PrenotazioneServizio> {
 
     @JsonProperty("disponibilita")
     private int disponibilita;
