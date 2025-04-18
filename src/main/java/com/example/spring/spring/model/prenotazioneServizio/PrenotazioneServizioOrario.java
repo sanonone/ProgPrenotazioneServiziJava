@@ -40,4 +40,21 @@ public class PrenotazioneServizioOrario extends Prenotazione {
             System.out.println("Errore nella conversione della data: " + e.getMessage());
         }
     }
+
+    public LocalDate getData() {
+        return dataInizio;
+    }
+
+    public TimeInterval getFasciaOraria() {
+        return fasciaOraria;
+    }
+
+    public int getQuantita() {
+        return quantitaPrenotata;
+    }
+
+    public int getNumeroGiorni() {
+        return numeroGiorni;
+    }
+
 }

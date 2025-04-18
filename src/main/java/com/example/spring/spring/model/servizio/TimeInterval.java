@@ -1,16 +1,25 @@
 package com.example.spring.spring.model.servizio;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 // Classe di supporto per rappresentare un intervallo di tempo [start, end)
 public class TimeInterval {
+    @JsonProperty("start")
     private final LocalTime start; // Inclusivo
+    @JsonProperty("end")
     private final LocalTime end;   // Esclusivo
 
     // Formatter per parsing e output
     private static final DateTimeFormatter HH_MM_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
+
+    public TimeInterval() {
+        this.start = null;
+        this.end = null;
+    }
 
     public TimeInterval(LocalTime start, LocalTime end) {
         // Aggiungiamo un controllo di validità: l'inizio non può essere dopo o uguale alla fine

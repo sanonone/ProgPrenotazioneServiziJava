@@ -6,11 +6,16 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.example.spring.spring.model.Messaggio;
 import com.example.spring.spring.model.persona.Cliente;
 import com.example.spring.spring.model.prenotazioneServizio.PrenotazioneServizio;
 import com.example.spring.spring.model.servizio.ServiziGiornalieri;
+import com.example.spring.spring.model.servizio.ServiziOrari;
+import com.example.spring.spring.model.servizio.TimeInterval;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
@@ -35,6 +40,7 @@ public class SimpleJavaClient {
         ChiamateUtente chiamateUtente = new ChiamateUtente();
         ChiamateServiziGiornalieri chiamateServiziGiornalieri = new ChiamateServiziGiornalieri();
         ChiamatePrenotazioneGiornaliera chiamatePrenotazioneGiornaliera = new ChiamatePrenotazioneGiornaliera();
+        ChiamateServiziOrari chiamateServiziOrari = new ChiamateServiziOrari();
 
         try {
 
@@ -59,7 +65,21 @@ public class SimpleJavaClient {
             chiamateServiziGiornalieri.deleteServizioGiornaliero("67ffa71ed550d46d1e8ed1e8");
              */
 
-            chiamatePrenotazioneGiornaliera.creaPrenotazioneGiornaliera(new PrenotazioneServizio("67ffa52dd550d46d1e8ed1e5", "67fe41d2e1c5dc459f047a22", "Noleggio motorino", "Mario", "Rossi", "15/01/2026", 3, 1,10));
+            //chiamatePrenotazioneGiornaliera.creaPrenotazioneGiornaliera(new PrenotazioneServizio("67ffa52dd550d46d1e8ed1e5", "67fe41d2e1c5dc459f047a22", "Noleggio motorino", "Mario", "Rossi", "15/01/2026", 3, 1,10));
+
+            // 1. Creare i singoli oggetti TimeInterval
+            TimeInterval fasciaMattina = new TimeInterval(LocalTime.of(9, 0), LocalTime.of(11, 0)); // 09:00 - 11:00
+            TimeInterval fasciaPausaPranzo = new TimeInterval(LocalTime.of(13, 0), LocalTime.of(14, 0)); // 13:00 - 14:00
+            TimeInterval fasciaPomeriggio = new TimeInterval(LocalTime.of(15, 0), LocalTime.of(18, 0)); // 15:00 - 18:00
+
+            // 2. Creare una Lista e aggiungere le fasce orarie
+            List<TimeInterval> fascePerServizio = new ArrayList<>();
+            fascePerServizio.add(fasciaMattina);
+            fascePerServizio.add(fasciaPausaPranzo);
+            fascePerServizio.add(fasciaPomeriggio);
+
+            chiamateServiziOrari.creaServizioOrario(new ServiziOrari("Massaggi", "massaggio tutto oliato paradisiaco", 100.00, fascePerServizio, 5));
+
 
 
         } catch (Exception e) {
