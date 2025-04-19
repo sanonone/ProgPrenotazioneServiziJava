@@ -6,6 +6,7 @@ import com.example.spring.spring.model.prenotazioneServizio.PrenotazioneServizio
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +20,8 @@ public class ServiziOrari extends Servizi implements Prenotabile<PrenotazioneSer
 
     // Mappa: data → (fascia → motorini già prenotati)
     @JsonProperty("prenotazioni")
-    private final Map<LocalDate, Map<TimeInterval, Integer>> prenotazioni = new HashMap<>();
+
+    private final Map<LocalDate, Map<String, Integer>> prenotazioni = new HashMap<>();
 
     public ServiziOrari() {
         super();
@@ -75,7 +77,7 @@ public class ServiziOrari extends Servizi implements Prenotabile<PrenotazioneSer
 
             // Ottieni la mappa delle prenotazioni per la data specificata.
             // Se la data non esiste, significa che non ci sono prenotazioni (getOrDefault restituisce una mappa vuota).
-            Map<TimeInterval, Integer> prenotazioniPerFasciaInData = prenotazioni.getOrDefault(dataCorrente, Map.of()); // Map.of() per mappa vuota immutabile
+            Map<String, Integer> prenotazioniPerFasciaInData = prenotazioni.getOrDefault(dataCorrente, Map.of()); // Map.of() per mappa vuota immutabile
 
             // Ottieni il numero di prenotazioni già esistenti per quella specifica fascia oraria.
             // Se la fascia non esiste nella mappa interna, significa 0 prenotazioni (getOrDefault restituisce 0).
@@ -127,14 +129,14 @@ public class ServiziOrari extends Servizi implements Prenotabile<PrenotazioneSer
             // Se non esiste, creala e aggiungila alla mappa principale.
             // computeIfAbsent è thread-safe per quanto riguarda l'inserimento della mappa interna,
             // ma non per l'aggiornamento del contatore interno.
-            Map<TimeInterval, Integer> prenotazioniPerFasciaInData = prenotazioni.computeIfAbsent(dataCorrente, k -> new HashMap<>());
+            Map<String, Integer> prenotazioniPerFasciaInData = prenotazioni.computeIfAbsent(dataCorrente, k -> new HashMap<>());
 
             // Aggiorna il conteggio per la fascia oraria specifica.
             // getOrDefault gestisce il caso in cui la fascia non abbia ancora prenotazioni.
-            prenotazioniPerFasciaInData.put(fascia, prenotazioniPerFasciaInData.getOrDefault(fascia, 0) + quantita);
+            prenotazioniPerFasciaInData.put(fascia.toString(), prenotazioniPerFasciaInData.getOrDefault(fascia.toString(), 0) + quantita);
 
             System.out.printf("Prenotazione confermata per %d posti/oggetti in data %s, fascia %s. Totale prenotazioni ora: %d%n",
-                    quantita, data, fascia, prenotazioniPerFasciaInData.get(fascia));
+                    quantita, data, fascia, prenotazioniPerFasciaInData.get(fascia.toString()));
 
             dataCorrente = dataCorrente.plusDays(1);
         }
@@ -186,7 +188,7 @@ public class ServiziOrari extends Servizi implements Prenotabile<PrenotazioneSer
         return disponibilitaPerFascia;
     }
 
-    public Map<LocalDate, Map<TimeInterval, Integer>> getPrenotazioni() {
+    public Map<LocalDate, Map<String, Integer>> getPrenotazioni() {
         // Restituisce una copia superficiale per evitare modifiche esterne dirette alla mappa principale
         return new HashMap<>(prenotazioni);
     }
@@ -196,9 +198,23 @@ public class ServiziOrari extends Servizi implements Prenotabile<PrenotazioneSer
         if (!isFasciaOrariaValida(fascia)) {
             return 0; // Non disponibile se la fascia non è valida per il servizio
         }
-        Map<TimeInterval, Integer> prenotazioniPerFasciaInData = prenotazioni.getOrDefault(data, Map.of());
-        int prenotazioniAttuali = prenotazioniPerFasciaInData.getOrDefault(fascia, 0);
+        Map<String, Integer> prenotazioniPerFasciaInData = prenotazioni.getOrDefault(data, Map.of());
+        int prenotazioniAttuali = prenotazioniPerFasciaInData.getOrDefault(fascia.toString(), 0);
         return Math.max(0, this.disponibilitaPerFascia - prenotazioniAttuali);
+    }
+
+
+
+    private String convertTimeIntervalToKey(TimeInterval interval) {
+        return interval.getStart().toString() + "-" + interval.getEnd().toString();
+    }
+
+    // Se hai bisogno di convertire da stringa a TimeInterval
+    private TimeInterval convertKeyToTimeInterval(String key) {
+        String[] parts = key.split("-");
+        LocalTime start = LocalTime.parse(parts[0]);
+        LocalTime end = LocalTime.parse(parts[1]);
+        return new TimeInterval(start, end);
     }
 
 }

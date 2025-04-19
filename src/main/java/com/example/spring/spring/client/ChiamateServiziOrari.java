@@ -41,6 +41,7 @@ public class ChiamateServiziOrari {
             System.out.println("Invio questo object: "+nuovoServizioOrario);
 
             //ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
             try {
                 String serJson = objectMapper.writeValueAsString(nuovoServizioOrario);
                 System.out.println("il servizio è: "+serJson);
