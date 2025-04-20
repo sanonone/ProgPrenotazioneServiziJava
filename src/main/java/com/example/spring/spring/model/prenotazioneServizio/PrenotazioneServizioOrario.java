@@ -30,6 +30,7 @@ public class PrenotazioneServizioOrario extends Prenotazione {
         this.numeroGiorni = numeroGiorni;
         this.quantitaPrenotata = quantitaPrenotata;
         this.fasciaOraria = fasciaOraria;
+        this.dataGestione = LocalDate.now();
 
         try{
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -41,7 +42,7 @@ public class PrenotazioneServizioOrario extends Prenotazione {
         }
     }
 
-    public LocalDate getData() {
+    public LocalDate getDataInizio() {
         return dataInizio;
     }
 
@@ -49,7 +50,7 @@ public class PrenotazioneServizioOrario extends Prenotazione {
         return fasciaOraria;
     }
 
-    public int getQuantita() {
+    public int getQuantitaPrenotata() {
         return quantitaPrenotata;
     }
 

@@ -90,10 +90,10 @@ public class ChiamateServiziOrari {
         }
     }
 
-    public List<Utente> getAllServiziGiornalieri() {
+    public List<Utente> getAllServiziOrari() {
         try {
-            System.out.println("\nChiamata a GET " + SERVER_URL + "/serviziGiornalieri");
-            String url = SERVER_URL + "/serviziGiornalieri";
+            System.out.println("\nChiamata a GET " + SERVER_URL + "/serviziOrari");
+            String url = SERVER_URL + "/serviziOrari";
             System.out.println("\nChiamata a GET " + url);
 
             // Configurazione dell'ObjectMapper per gestire correttamente le date
@@ -101,28 +101,28 @@ public class ChiamateServiziOrari {
             objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false); // opzionale
 
-            HttpRequest requestGetUtenti = HttpRequest.newBuilder()
-                    .uri(URI.create(SERVER_URL + "/serviziGiornalieri"))
+            HttpRequest requestGetSerOrari = HttpRequest.newBuilder()
+                    .uri(URI.create(SERVER_URL + "/serviziOrari"))
                     .GET() // Specifica il metodo GET
                     .build();
 
             // Inviamo la richiesta e otteniamo la risposta come Stringa
             // BodyHandlers.ofString() converte il corpo della risposta in una Stringa Java
-            HttpResponse<String> responseGetServiziGiornalieri = client.send(requestGetUtenti, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> responseGetServiziOrari = client.send(requestGetSerOrari, HttpResponse.BodyHandlers.ofString());
 
             // Controlliamo se la chiamata ha avuto successo (codice 2xx)
-            if (responseGetServiziGiornalieri.statusCode() >= 200 && responseGetServiziGiornalieri.statusCode() < 300) {
-                System.out.println("Risposta dal server (utenti): " + responseGetServiziGiornalieri.body());
-                return objectMapper.readValue(responseGetServiziGiornalieri.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, ServiziGiornalieri.class));
+            if (responseGetServiziOrari.statusCode() >= 200 && responseGetServiziOrari.statusCode() < 300) {
+                System.out.println("Risposta dal server (servizi orari): " + responseGetServiziOrari.body());
+                return objectMapper.readValue(responseGetServiziOrari.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, ServiziGiornalieri.class));
             } else {
-                System.err.println("Errore nella chiamata /utenti: Codice " + responseGetServiziGiornalieri.statusCode());
+                System.err.println("Errore nella chiamata /serviziOrari: Codice " + responseGetServiziOrari.statusCode());
                 return null;
             }
 
 
 
         } catch (Exception e) {
-            System.out.println("Errore nelle chiamate utenti: " + e.getMessage());
+            System.out.println("Errore nelle chiamate servizi orari: " + e.getMessage());
             return null;
         }
     }

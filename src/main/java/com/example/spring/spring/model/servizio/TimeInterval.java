@@ -9,16 +9,14 @@ import java.util.Objects;
 // Classe di supporto per rappresentare un intervallo di tempo [start, end)
 public class TimeInterval {
     @JsonProperty("start")
-    private final LocalTime start; // Inclusivo
+    private LocalTime start; // Inclusivo
     @JsonProperty("end")
-    private final LocalTime end;   // Esclusivo
+    private LocalTime end;   // Esclusivo
 
     // Formatter per parsing e output
     private static final DateTimeFormatter HH_MM_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
     public TimeInterval() {
-        this.start = null;
-        this.end = null;
     }
 
     public TimeInterval(LocalTime start, LocalTime end) {
@@ -35,9 +33,18 @@ public class TimeInterval {
         return start;
     }
 
+    public void setStart(LocalTime start) {
+        this.start = start;
+    }
+
     public LocalTime getEnd() {
         return end;
     }
+
+    public void setEnd(LocalTime end) {
+        this.end = end;
+    }
+
 
     /**
      * Verifica se questo intervallo di tempo si sovrappone con un altro intervallo.

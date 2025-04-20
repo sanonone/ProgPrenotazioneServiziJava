@@ -13,6 +13,7 @@ import java.util.List;
 import com.example.spring.spring.model.Messaggio;
 import com.example.spring.spring.model.persona.Cliente;
 import com.example.spring.spring.model.prenotazioneServizio.PrenotazioneServizio;
+import com.example.spring.spring.model.prenotazioneServizio.PrenotazioneServizioOrario;
 import com.example.spring.spring.model.servizio.ServiziGiornalieri;
 import com.example.spring.spring.model.servizio.ServiziOrari;
 import com.example.spring.spring.model.servizio.TimeInterval;
@@ -41,6 +42,7 @@ public class SimpleJavaClient {
         ChiamateServiziGiornalieri chiamateServiziGiornalieri = new ChiamateServiziGiornalieri();
         ChiamatePrenotazioneGiornaliera chiamatePrenotazioneGiornaliera = new ChiamatePrenotazioneGiornaliera();
         ChiamateServiziOrari chiamateServiziOrari = new ChiamateServiziOrari();
+        ChiamatePrenotazioneOraria chiamatePrenotazioneOraria = new ChiamatePrenotazioneOraria();
 
         try {
 
@@ -68,6 +70,7 @@ public class SimpleJavaClient {
             //chiamatePrenotazioneGiornaliera.creaPrenotazioneGiornaliera(new PrenotazioneServizio("67ffa52dd550d46d1e8ed1e5", "67fe41d2e1c5dc459f047a22", "Noleggio motorino", "Mario", "Rossi", "15/01/2026", 3, 1,10));
 
             // 1. Creare i singoli oggetti TimeInterval
+            /*
             TimeInterval fasciaMattina = new TimeInterval(LocalTime.of(9, 0), LocalTime.of(11, 0)); // 09:00 - 11:00
             TimeInterval fasciaPausaPranzo = new TimeInterval(LocalTime.of(13, 0), LocalTime.of(14, 0)); // 13:00 - 14:00
             TimeInterval fasciaPomeriggio = new TimeInterval(LocalTime.of(15, 0), LocalTime.of(18, 0)); // 15:00 - 18:00
@@ -79,6 +82,11 @@ public class SimpleJavaClient {
             fascePerServizio.add(fasciaPomeriggio);
 
             chiamateServiziOrari.creaServizioOrario(new ServiziOrari("Massaggi", "massaggio tutto oliato paradisiaco", 100.00, fascePerServizio, 5));
+            chiamateServiziOrari.getAllServiziOrari();
+             */
+
+            TimeInterval fasciaMattina = new TimeInterval(LocalTime.of(9, 0), LocalTime.of(11, 0)); // 09:00 - 11:00
+            chiamatePrenotazioneOraria.creaPrenotazioneOraria(new PrenotazioneServizioOrario("680511a9c398b93a6c34eaa3", "67fe64883a8df7041bc2bbdb", "Massaggio", "Mario", "Rossi", "15/01/2026", 2, 2, 100, fasciaMattina));
 
 
 

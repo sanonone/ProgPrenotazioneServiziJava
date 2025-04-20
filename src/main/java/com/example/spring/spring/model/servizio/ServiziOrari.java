@@ -4,6 +4,7 @@ import com.example.spring.spring.interfacce.Prenotabile;
 import com.example.spring.spring.model.prenotazioneServizio.PrenotazioneServizio;
 import com.example.spring.spring.model.prenotazioneServizio.PrenotazioneServizioOrario;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Document(collection = "serviziOrari")
 public class ServiziOrari extends Servizi implements Prenotabile<PrenotazioneServizioOrario> {
     @JsonProperty("fasceOrarie")
     protected List<TimeInterval> fasceOrarie;
@@ -21,7 +23,7 @@ public class ServiziOrari extends Servizi implements Prenotabile<PrenotazioneSer
     // Mappa: data → (fascia → motorini già prenotati)
     @JsonProperty("prenotazioni")
 
-    private final Map<LocalDate, Map<String, Integer>> prenotazioni = new HashMap<>();
+    private Map<LocalDate, Map<String, Integer>> prenotazioni = new HashMap<>();
 
     public ServiziOrari() {
         super();
@@ -57,7 +59,7 @@ public class ServiziOrari extends Servizi implements Prenotabile<PrenotazioneSer
      * @return true se c'è abbastanza disponibilità, false altrimenti.
      */
     public boolean verificaDisponibilita(LocalDate data, int numeroGiorni, TimeInterval fascia, int quantita) {
-        // Controllo preliminare se la fascia oraria è offerta da questo servizio
+        // Controllo preliminare se la fascia oraria richiesta è valida per questo servizio.
         if (!isFasciaOrariaValida(fascia)) {
             System.err.printf("Errore: La fascia oraria %s non è offerta per questo servizio.%n", fascia);
             return false;
@@ -70,18 +72,16 @@ public class ServiziOrari extends Servizi implements Prenotabile<PrenotazioneSer
         LocalDate dataFine = data.plusDays(numeroGiorni);
         LocalDate dataCorrente = data;
 
+        // Ottieni la chiave stringa per la fascia, che useremo in modo consistente
+        String fasciaKey = fascia.toString(); // <-- Genera la chiave stringa qui
 
         while (!dataCorrente.isAfter(dataFine)) {
-
-
-
             // Ottieni la mappa delle prenotazioni per la data specificata.
-            // Se la data non esiste, significa che non ci sono prenotazioni (getOrDefault restituisce una mappa vuota).
-            Map<String, Integer> prenotazioniPerFasciaInData = prenotazioni.getOrDefault(dataCorrente, Map.of()); // Map.of() per mappa vuota immutabile
+            Map<String, Integer> prenotazioniPerFasciaInData = prenotazioni.getOrDefault(dataCorrente, Map.of());
 
             // Ottieni il numero di prenotazioni già esistenti per quella specifica fascia oraria.
-            // Se la fascia non esiste nella mappa interna, significa 0 prenotazioni (getOrDefault restituisce 0).
-            int prenotazioniAttuali = prenotazioniPerFasciaInData.getOrDefault(fascia, 0);
+            // Usa la CHIAVE STRINGA qui, consistente con confermaPrenotazione
+            int prenotazioniAttuali = prenotazioniPerFasciaInData.getOrDefault(fasciaKey, 0); // <-- Corretto qui
 
             // Verifica se aggiungendo la nuova quantità si supera la disponibilità per fascia.
             boolean disponibile = (prenotazioniAttuali + quantita) <= this.disponibilitaPerFascia;
@@ -95,11 +95,9 @@ public class ServiziOrari extends Servizi implements Prenotabile<PrenotazioneSer
                         dataCorrente, fascia, prenotazioniAttuali, quantita, this.disponibilitaPerFascia);
             }
             dataCorrente = dataCorrente.plusDays(1);
-
         }
         System.out.println("Disponibilità verificata per tutte le date.");
-        return true;
-
+        return true; // Ritorna true solo se disponibile per TUTTE le date nel range
     }
 
     /**
@@ -154,14 +152,14 @@ public class ServiziOrari extends Servizi implements Prenotabile<PrenotazioneSer
     @Override
     public boolean prenota(PrenotazioneServizioOrario prenotazione) {
         // Validazione input prenotazione
-        if (prenotazione == null || prenotazione.getData() == null || prenotazione.getFasciaOraria() == null || prenotazione.getQuantita() <= 0) {
+        if (prenotazione == null || prenotazione.getDataInizio() == null || prenotazione.getFasciaOraria() == null || prenotazione.getQuantitaPrenotata() <= 0) {
             System.err.println("Errore: Dettagli della prenotazione non validi o incompleti.");
             return false;
         }
 
-        LocalDate data = prenotazione.getData();
+        LocalDate data = prenotazione.getDataInizio();
         TimeInterval fascia = prenotazione.getFasciaOraria();
-        int quantita = prenotazione.getQuantita();
+        int quantita = prenotazione.getQuantitaPrenotata();
         int numeroGiorni = prenotazione.getNumeroGiorni();
 
         // 1. Verifica disponibilità
