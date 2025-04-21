@@ -1,0 +1,12 @@
+<config>
+
+    <app-name>Sistema Prenotazioni Servizi</app-name>
+    <default-date-format>yyyy-MM-dd</default-date-format>
+    <start-time1>8:0</start-time1>
+    <end-time1>13:0</end-time1>
+    <start-time2>13:0</start-time2>
+    <end-time2>19:0</end-time2>
+    <start-time3>8:0</start-time3>
+    <end-time3>19:0</end-time3>
+
+</config>
