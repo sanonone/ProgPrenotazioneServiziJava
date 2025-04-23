@@ -39,7 +39,7 @@ public class Cliente extends Persona {
     public String toString() {
         return "Cliente{" +
                 "email='" + email + '\'' +
-                ", id='" + id + '\'' +
-                ", nome='" + nome + '\'' + cognome + '\'' + '}';
+                ", id='" + this.getId() + '\'' +
+                ", nome='" + this.getNome() + '\'' + this.getCognome() + '\'' + '}';
     }
 }

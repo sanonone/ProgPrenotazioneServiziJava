@@ -3,6 +3,7 @@ package com.example.spring.spring.model.servizio;
 import com.example.spring.spring.interfacce.Prenotabile;
 import com.example.spring.spring.model.prenotazioneServizio.PrenotazioneServizio;
 import com.example.spring.spring.model.prenotazioneServizio.PrenotazioneServizioOrario;
+import com.example.spring.spring.parser.AppConfigParser;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -34,8 +35,17 @@ public class ServiziOrari extends Servizi implements Prenotabile<PrenotazioneSer
 
     public ServiziOrari(String nome, String descrizione, double prezzo, List<TimeInterval> fasceOrarie, int disponibilitaPerFascia) {
         super(nome, descrizione, prezzo);
-        this.fasceOrarie = new ArrayList<>(fasceOrarie);;
+
         this.disponibilitaPerFascia = disponibilitaPerFascia;
+
+        if(fasceOrarie==null){
+            System.out.println("Nessuna fascia oraria presente, il servizio userà le fasce predefinite");
+            AppConfigParser parser = new AppConfigParser("/home/dash/VsCodeProgect/uni/spring/spring/src/main/resources/config.xml");
+            this.fasceOrarie = new ArrayList<>(parser.getFascePerServizio());
+
+        }else{
+            this.fasceOrarie = fasceOrarie;
+        }
     }
 
 
@@ -214,5 +224,11 @@ public class ServiziOrari extends Servizi implements Prenotabile<PrenotazioneSer
         LocalTime end = LocalTime.parse(parts[1]);
         return new TimeInterval(start, end);
     }
+
+    public void setFasceOrarie(List<TimeInterval> fasceOrarie) {
+        this.fasceOrarie = fasceOrarie;
+    }
+
+
 
 }

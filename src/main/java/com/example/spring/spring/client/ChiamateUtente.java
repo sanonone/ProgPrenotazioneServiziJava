@@ -3,6 +3,8 @@ package com.example.spring.spring.client;
 import com.example.spring.spring.model.persona.Cliente;
 import com.example.spring.spring.model.persona.Utente;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
 import java.net.URI;
@@ -27,13 +29,16 @@ public class ChiamateUtente {
     ObjectMapper objectMapper = new ObjectMapper();
 
 
-    public void creaUtente(){
+    public void creaUtente(Utente nuovoUtente){
         try{
             System.out.println("\nChiamata a POST " + SERVER_URL + "/utenti/create");
-            Utente nuovoUtente = new Utente("Pippo", "Rossi", 23, 348578387,"pippo","pw","receptionist","02-02-2021");
+            //Utente nuovoUtente = new Utente("Pippo", "Rossi", 23, 348578387,"pippo","pw","receptionist","02-02-2021");
             System.out.println("Invio questo object: "+nuovoUtente);
 
             //ObjectMapper objectMapper = new ObjectMapper();
+
+            objectMapper.registerModule(new JavaTimeModule());
+            objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
             try {
                 String utenteJson = objectMapper.writeValueAsString(nuovoUtente);
                 System.out.println("l'utente è: "+utenteJson);
@@ -66,6 +71,9 @@ public class ChiamateUtente {
             String url = SERVER_URL + "/utenti/" + id;
             System.out.println("\nChiamata a GET " + url);
 
+            objectMapper.registerModule(new JavaTimeModule());
+            objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+
             // Prepariamo la richiesta GET per /greet/Mondo
             HttpRequest reqId = HttpRequest.newBuilder()
                     .uri(URI.create(url))
@@ -87,6 +95,9 @@ public class ChiamateUtente {
             System.out.println("\nChiamata a GET " + SERVER_URL + "/utenti");
             String url = SERVER_URL + "/utenti";
             System.out.println("\nChiamata a GET " + url);
+
+            objectMapper.registerModule(new JavaTimeModule());
+            objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
             HttpRequest requestGetUtenti = HttpRequest.newBuilder()
                     .uri(URI.create(SERVER_URL + "/utenti"))

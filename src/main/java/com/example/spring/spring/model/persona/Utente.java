@@ -20,9 +20,9 @@ public class Utente extends Persona {
     @JsonProperty("password")
     private String password;
     @JsonProperty("ruolo")
-    protected String ruolo;
+    private String ruolo;
     @JsonProperty("dataAssunzione")
-    protected LocalDate dataAssunzione;
+    private LocalDate dataAssunzione;
 
     SerGiornalieroRepository serGiornalieroRepository;
 

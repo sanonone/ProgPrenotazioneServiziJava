@@ -7,15 +7,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public abstract class Persona {
     @JsonProperty("id")
     @Id
-    protected String id;
+    private String id;
     @JsonProperty("nome")
-    protected String nome;
+    private String nome;
     @JsonProperty("cognome")
-    protected String cognome;
+    private String cognome;
     @JsonProperty("eta")
-    protected int eta;
+    private int eta;
     @JsonProperty("telefono")
-    protected int telefono;
+    private int telefono;
 
     public Persona() {
     }
@@ -27,39 +27,25 @@ public abstract class Persona {
         this.eta = eta;
         this.telefono = telefono;
     }
-    // Getters e Setters
 
-    /*
+
     public String getId() {
         return id;
     }
-    public void setId(String id) {
-        this.id = id;
-    }
+
     public String getNome() {
         return nome;
     }
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-    public String getCognome() {
-        return cognome;
-    }
-    public void setCognome(String cognome) {
-        this.cognome = cognome;
-    }
+
     public int getEta() {
         return eta;
     }
-    public void setEta(int eta) {
-        this.eta = eta;
+
+    public String getCognome() {
+        return cognome;
     }
+
     public int getTelefono() {
         return telefono;
     }
-    public void setTelefono(int telefono) {
-        this.telefono = telefono;
-    }
-*/
-
 }

@@ -1,26 +1,13 @@
 package com.example.spring.spring.client;
 
-import java.io.IOException;
-import java.net.URI;
 import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.time.Duration;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
-import com.example.spring.spring.model.Messaggio;
-import com.example.spring.spring.model.persona.Cliente;
-import com.example.spring.spring.model.prenotazioneServizio.PrenotazioneServizio;
-import com.example.spring.spring.model.prenotazioneServizio.PrenotazioneServizioOrario;
-import com.example.spring.spring.model.servizio.ServiziGiornalieri;
 import com.example.spring.spring.model.servizio.ServiziOrari;
-import com.example.spring.spring.model.servizio.TimeInterval;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
-public class SimpleJavaClient {
+public class Client {
 
     // URL base del nostro server semplice
     private static final String SERVER_URL = "http://localhost:8080/api";
@@ -46,17 +33,20 @@ public class SimpleJavaClient {
 
         try {
 
+
+
             /*
-            chiamateCliente.creaCliente();
+            chiamateCliente.creaCliente(new Cliente("gigi", "proiettili", 23, 348578387,"mario.rossi@example.com"));
             chiamateCliente.getClienteById("67fbb21307b3a35264c9587a");
             chiamateCliente.getAllClienti();
             chiamateCliente.deleteCliente("67fbb21307b3a35264c9587a");
              */
 
+
             /*
-            chiamateUtente.creaUtente();
+            chiamateUtente.creaUtente(new Utente("Pippo", "Rossi", 23, 348578387,"pippo","pw","receptionist","02-02-2021"));
             chiamateUtente.getAllUtenti();
-            chiamateUtente.getUtenteById("67fe64883a8df7041bc2bbdb");
+            chiamateUtente.getUtenteById("6808f8783694b10175a8aae1");
             chiamateUtente.deleteUtente("67fe64883a8df7041bc2bbdb");
              */
 
@@ -81,14 +71,16 @@ public class SimpleJavaClient {
             fascePerServizio.add(fasciaPausaPranzo);
             fascePerServizio.add(fasciaPomeriggio);
 
-            chiamateServiziOrari.creaServizioOrario(new ServiziOrari("Massaggi", "massaggio tutto oliato paradisiaco", 100.00, fascePerServizio, 5));
+            chiamateServiziOrari.creaServizioOrario(new ServiziOrari("Massaggi", "massaggio bellissimo", 100.00, fascePerServizio, 5));
             chiamateServiziOrari.getAllServiziOrari();
              */
 
+            /*
             TimeInterval fasciaMattina = new TimeInterval(LocalTime.of(9, 0), LocalTime.of(11, 0)); // 09:00 - 11:00
             chiamatePrenotazioneOraria.creaPrenotazioneOraria(new PrenotazioneServizioOrario("680511a9c398b93a6c34eaa3", "67fe64883a8df7041bc2bbdb", "Massaggio", "Mario", "Rossi", "15/01/2026", 2, 2, 100, fasciaMattina));
+            */
 
-
+            chiamateServiziOrari.creaServizioOrario(new ServiziOrari("no fasce", "massaggio bellissimo", 100.00, null, 5));
 
         } catch (Exception e) {
             // Gestione di errori (es. server non raggiungibile, errori di rete)
@@ -96,5 +88,5 @@ public class SimpleJavaClient {
             e.printStackTrace();
         }
 
-        System.out.println("\n--- Client Java Semplice Terminato ---");
+        System.out.println("\n--- Client Terminato ---");
     }}
