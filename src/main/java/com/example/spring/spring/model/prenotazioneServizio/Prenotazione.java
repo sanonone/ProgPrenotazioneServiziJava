@@ -43,7 +43,7 @@ public abstract class Prenotazione {
     }
 
     public String getId() {
-        return id;
+        return this.id;
     }
 
     public String getIdServizio() {

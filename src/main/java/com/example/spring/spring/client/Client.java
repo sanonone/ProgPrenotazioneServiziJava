@@ -65,7 +65,7 @@ public class Client {
             //chiamateServiziGiornalieri.deleteServizioGiornaliero("67ffa71ed550d46d1e8ed1e8");
 
 
-            //chiamatePrenotazioneGiornaliera.creaPrenotazioneGiornaliera(new PrenotazioneServizio("680a13a5e6356128547377db", "680a12e3e6356128547377d7", "Noleggio motorini", "Mario", "Rossi", "15/01/2026", 3, 1,60));
+            chiamatePrenotazioneGiornaliera.creaPrenotazioneGiornaliera(new PrenotazioneServizio("67ffa52dd550d46d1e8ed1e5", "680a12e3e6356128547377d7", "Noleggio motorini", "Mario", "Rossi", "10/04/2025", 3, 1,60));
 
             // 1. Creare i singoli oggetti TimeInterval
             /*
@@ -84,10 +84,10 @@ public class Client {
              */
             //chiamateServiziOrari.creaServizioOrario(new ServiziOrari("Prenota ombrellone", "prenotazione ombrellone spiaggia per una fascia oraria", 10.00, null, 5));
 
-            /*
-            TimeInterval fasciaMattina = new TimeInterval(LocalTime.of(9, 0), LocalTime.of(11, 0)); // 09:00 - 11:00
-            chiamatePrenotazioneOraria.creaPrenotazioneOraria(new PrenotazioneServizioOrario("680511a9c398b93a6c34eaa3", "67fe64883a8df7041bc2bbdb", "Massaggio", "Mario", "Rossi", "15/01/2026", 2, 2, 100, fasciaMattina));
-            */
+
+            TimeInterval fasciaMattina = new TimeInterval(LocalTime.of(8, 0), LocalTime.of(13, 0)); // 09:00 - 11:00
+            chiamatePrenotazioneOraria.creaPrenotazioneOraria(new PrenotazioneServizioOrario("68090597defddd040b3fa6ee", "67fe64883a8df7041bc2bbdb", "Massaggio", "Mario", "Rossi", "15/04/2025", 2, 2, 100, fasciaMattina));
+
 
             //chiamateServiziOrari.creaServizioOrario(new ServiziOrari("no fasce", "massaggio bellissimo", 100.00, null, 5));
 
