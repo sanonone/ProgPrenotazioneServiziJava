@@ -53,12 +53,12 @@ public class UtenteController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUtente(@PathVariable String id) {
+    public ResponseEntity<String> deleteUtente(@PathVariable String id) {
         if (!utenteRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
         utenteRepository.deleteById(id);
-        return ResponseEntity.noContent().build(); // 204
+        return new ResponseEntity<>("Utente eliminato correttamente",HttpStatus.OK);
 
     }
 

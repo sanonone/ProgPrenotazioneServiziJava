@@ -33,10 +33,10 @@ public class ChiamateServiziGiornalieri {
 
 
 
-    public void creaServizioGiornaliero(ServiziGiornalieri nuovoServizioGiornaliero){
+    public void creaServizioGiornaliero(String nome, String descrizione, double prezzo, int disponibilita){
         try{
             System.out.println("\nChiamata a POST " + SERVER_URL + "/utenti/create");
-
+            ServiziGiornalieri nuovoServizioGiornaliero = new ServiziGiornalieri(nome, descrizione, prezzo, disponibilita);
             System.out.println("Invio questo object: "+nuovoServizioGiornaliero);
 
             //ObjectMapper objectMapper = new ObjectMapper();

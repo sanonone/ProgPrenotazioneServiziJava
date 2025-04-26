@@ -3,6 +3,7 @@ package com.example.spring.spring.client;
 import com.example.spring.spring.model.persona.Utente;
 import com.example.spring.spring.model.servizio.ServiziGiornalieri;
 import com.example.spring.spring.model.servizio.ServiziOrari;
+import com.example.spring.spring.model.servizio.TimeInterval;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -34,10 +35,10 @@ public class ChiamateServiziOrari {
 
 
 
-    public void creaServizioOrario(ServiziOrari nuovoServizioOrario){
+    public void creaServizioOrario(String nome, String descrizione, double prezzo, List<TimeInterval> fasceOrarie, int disponibilitaPerFascia){
         try{
             System.out.println("\nChiamata a POST " + SERVER_URL + "/serviziOrari/create");
-
+            ServiziOrari nuovoServizioOrario = new ServiziOrari(nome, descrizione, prezzo, fasceOrarie, disponibilitaPerFascia);
             System.out.println("Invio questo object: "+nuovoServizioOrario);
 
             //ObjectMapper objectMapper = new ObjectMapper();

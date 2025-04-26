@@ -29,10 +29,10 @@ public class ChiamateUtente {
     ObjectMapper objectMapper = new ObjectMapper();
 
 
-    public void creaUtente(Utente nuovoUtente){
+    public void creaUtente(String nome, String cognome, int eta, int telefono, String username, String password, String ruolo, String dataAssunzione){
         try{
             System.out.println("\nChiamata a POST " + SERVER_URL + "/utenti/create");
-            //Utente nuovoUtente = new Utente("Pippo", "Rossi", 23, 348578387,"pippo","pw","receptionist","02-02-2021");
+            Utente nuovoUtente = new Utente(nome, cognome, eta, telefono,username,password,ruolo,dataAssunzione);
             System.out.println("Invio questo object: "+nuovoUtente);
 
             //ObjectMapper objectMapper = new ObjectMapper();

@@ -64,7 +64,7 @@ public class SerGiornalieroController {
         }
         serGiornalieroRepository.deleteById(id);
         //return ResponseEntity.noContent().build(); // 204
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Servizio giornaliero eliminato correttamente",HttpStatus.OK);
 
     }
 

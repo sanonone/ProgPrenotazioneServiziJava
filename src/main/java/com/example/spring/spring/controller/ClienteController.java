@@ -61,7 +61,7 @@ public class ClienteController {
             return ResponseEntity.notFound().build();
         }
         clienteRepository.deleteById(id);
-        return ResponseEntity.noContent().build(); // 204
+        return new ResponseEntity<>("Cliente eliminato correttamente",HttpStatus.OK);
 
     }
 

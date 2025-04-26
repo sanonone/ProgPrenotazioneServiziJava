@@ -27,10 +27,10 @@ public class ChiamateCliente {
 
 
 
-    public void creaCliente(Cliente nuovoCliente){
+    public void creaCliente(String nome, String cognome, int eta, int telefono, String email){
         try{
             System.out.println("\nChiamata a POST " + SERVER_URL + "/clienti/create");
-            //Cliente nuovoCliente = new Cliente("Luca", "Verdi", 23, 348578387,"mario.rossi@example.com");
+            Cliente nuovoCliente = new Cliente(nome, cognome, eta, telefono,email);
             System.out.println("Invio questo object: "+nuovoCliente);
 
             //ObjectMapper objectMapper = new ObjectMapper();

@@ -64,7 +64,7 @@ public class SerOrarioController {
         }
         serOrarioRepository.deleteById(id);
         //return ResponseEntity.noContent().build(); // 204
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Servizio orario eliminato correttamente",HttpStatus.OK);
 
     }
 
