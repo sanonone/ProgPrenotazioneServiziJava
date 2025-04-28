@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface UtenteRepository extends MongoRepository<Utente, String> {
     // Metodi di query personalizzati possono essere definiti qui
     List<Utente> findByNome(String nome);
-
+    Utente findByUsername(String username);
     List<Utente> findByNomeAndCognome(String nome, String cognome);
     List<Utente> findByNomeLikeIgnoreCase(String nome);
 }

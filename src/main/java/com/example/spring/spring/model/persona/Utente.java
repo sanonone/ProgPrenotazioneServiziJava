@@ -47,6 +47,18 @@ public class Utente extends Persona {
 
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
     /*
     @Override
     public ServiziGiornalieri creaServizioGiornaliero(String nome, String descrizione, double prezzo, int disponibilita) {

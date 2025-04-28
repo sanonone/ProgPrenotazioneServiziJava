@@ -2,6 +2,7 @@ package com.example.spring.spring.controller;
 
 import com.example.spring.spring.model.persona.Cliente;
 import com.example.spring.spring.model.prenotazioneServizio.PrenotazioneServizio;
+import com.example.spring.spring.model.prenotazioneServizio.PrenotazioneServizioOrario;
 import com.example.spring.spring.model.servizio.ServiziGiornalieri;
 import com.example.spring.spring.mongoHelper.PrenotazioneGiornalieraRepository;
 import com.example.spring.spring.mongoHelper.SerGiornalieroRepository;
@@ -12,10 +13,9 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/prenotazioniServiziGiornalieri")
@@ -26,6 +26,11 @@ public class PrenotazioneGionalieraController {
 
     @Autowired
     private SerGiornalieroRepository serGiornalieroRepository;
+
+    @GetMapping
+    public ResponseEntity<List<PrenotazioneServizio>> getAllPrenotazioni() {
+        return new ResponseEntity<>(prenotazioneGiornalieraRepository.findAll(), HttpStatus.OK);
+    }
 
     @PostMapping("/create")
     public ResponseEntity<String> creaPrenotazione(@RequestBody String prenotazione) {

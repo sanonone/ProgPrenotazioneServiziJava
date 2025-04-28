@@ -26,7 +26,7 @@ public class SchedulingThreadPulizia {
     /**
      * Task schedulato da Spring che avvia un nuovo thread manuale ogni minuto.
      */
-    @Scheduled(fixedRate = 20000) // Esegui questo metodo ogni 20 sec
+    @Scheduled(fixedRate = 120000) // Esegui questo metodo ogni 20 sec
     public void avvioThreadPulizia(){
         System.out.println("\n\nAvvio ThreadPulizia a " + LocalDateTime.now());
 

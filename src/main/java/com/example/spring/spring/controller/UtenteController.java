@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
+import com.fasterxml.jackson.databind.JsonNode;
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 @RestController
 @RequestMapping("/api/utenti")
@@ -46,6 +48,23 @@ public class UtenteController {
 
         System.out.println("Cliente ricevuto: " + utente.toString());
         Utente nuovoUtente = objectMapper.readValue(utente, Utente.class);
+
+        //controllo non ci siano altri utenti nel database con lo stesso username
+        List<Utente> utentiDB = utenteRepository.findAll().stream().filter(utDB -> utDB.getUsername().equals(nuovoUtente.getUsername())).toList();
+        if(!utentiDB.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
+        //converto la stringa in nodo json per poi poter leggere il campo password e fare l'hash
+        JsonNode rootNode = objectMapper.readTree(utente);
+
+        // recupero la password
+        String password = rootNode.get("password").asText();
+
+        // faccio l'hash
+        String hashedPassword = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+        nuovoUtente.setPassword(hashedPassword);
+
         utenteRepository.save(nuovoUtente);
         //gestoreClienti.creaCliente(nuovoUtente);
 
@@ -59,6 +78,51 @@ public class UtenteController {
         }
         utenteRepository.deleteById(id);
         return new ResponseEntity<>("Utente eliminato correttamente",HttpStatus.OK);
+
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody String userAndPassword) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+
+        //converto la stringa in nodo json per poi poter leggere i campi user e password
+        JsonNode rootNode = objectMapper.readTree(userAndPassword);
+
+        System.out.println("recupero dati utente");
+        // recupero l'utente
+        String user = rootNode.get("username").asText();
+        // recupero la password
+        String password = rootNode.get("password").asText();
+
+
+        //controllo password valida
+        //BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hash);
+        //boolean valid = result.verified;
+
+        System.out.println("recupero dati utente dal db mongo");
+
+        List<Utente> utentiDB = utenteRepository.findAll().stream().filter(utente -> utente.getUsername().equals(user)).toList();
+        if(utentiDB.isEmpty()){
+            return new ResponseEntity<>("Utente non trovato",HttpStatus.NOT_FOUND);
+        }
+        Utente utenteDB = utentiDB.getFirst();
+        System.out.println("LOG: Utente trovato: " + utenteDB.toString());
+
+        // Verifica
+        BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), utenteDB.getPassword());
+
+        // Controlli se la password è corretta
+        if (result.verified) {
+            System.out.println("Password corretta!");
+            return new ResponseEntity<>("Login effettuato correttamente (in un'app vera tornerebbe un JWT Token per fare le altre chiamate e bla bla)",HttpStatus.OK);
+        } else {
+            System.out.println("Password sbagliata!");
+            return new ResponseEntity<>("Errore durante il login, username o password errati",HttpStatus.UNAUTHORIZED);
+        }
+
+
 
     }
 
