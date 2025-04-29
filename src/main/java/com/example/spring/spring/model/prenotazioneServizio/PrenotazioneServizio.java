@@ -56,4 +56,21 @@ public class PrenotazioneServizio extends Prenotazione {
     public LocalDate getDataGestione() {
         return dataGestione;
     }
+
+    @Override
+    public String toString() {
+        return "PrenotazioneServizio{\n" +
+                "id='" + getId()+
+                "\nidServizio='" + getIdServizio()+
+                "\nidCliente='" + getIdCliente()+
+                "\nnomeServizio='" + getNomeServizio()+
+                "\nnomeCliente='" + getNomeCliente()+
+                "\ncognomeCliente='" + getCognomeCliente()+
+                "\nprezzoTotale=" + getPrezzoTotale() +
+                "\ndataInizio=" + dataInizio +
+                "\nnumeroGiorni=" + numeroGiorni +
+                "\nquantitaPrenotata=" + quantitaPrenotata +
+                "\ndataGestione=" + dataGestione +
+                '}';
+    }
 }

@@ -12,7 +12,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ChiamateUtente {
 
@@ -144,6 +146,53 @@ public class ChiamateUtente {
             }
         } catch (Exception e) {
             System.out.println("Errore nella creazione del cliente: " + e.getMessage());
+        }
+    }
+
+    public Utente loginUtente(String username, String password) {
+        try {
+            String url = SERVER_URL + "/utenti/login";
+            System.out.println("\nChiamata a POST " + url);
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("username", username);
+            data.put("password", password);
+
+            objectMapper.registerModule(new JavaTimeModule());
+            objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+
+            String oggettoJson = objectMapper.writeValueAsString(data);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(SERVER_URL + "/utenti/login")) // Sostituisci con l'URL del tuo endpoint
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(oggettoJson))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            System.out.println("Status Code: " + response.statusCode());
+            System.out.println("Response Body: " + response.body());
+
+            //401 anauthorized, 200 ok, 404 not found
+            if(response.statusCode() == 200) {
+                return objectMapper.readValue(response.body(), Utente.class);
+            } else if(response.statusCode() == 404) {
+                System.out.println("Utente non trovato");
+                return null;
+            } else if(response.statusCode() == 401) {
+                System.out.println("Credenziali errate");
+                return null;
+            } else {
+                System.out.println("Errore sconosciuto");
+                return null;
+            }
+
+
+
+        } catch (Exception e) {
+            System.out.println("Errore nella creazione del cliente: " + e.getMessage());
+            return null;
         }
     }
 }

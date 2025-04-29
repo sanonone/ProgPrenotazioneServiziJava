@@ -58,4 +58,20 @@ public class PrenotazioneServizioOrario extends Prenotazione {
         return numeroGiorni;
     }
 
+    @Override
+    public String toString() {
+        return "PrenotazioneServizioOrario{" +
+                "\nidServizio=" + getIdServizio()+
+                "\nidCliente=" + getIdCliente()+
+                "\nnomeServizio=" + getNomeServizio()+
+                "\nnomeCliente=" + getNomeCliente()+
+                "\ncognomeCliente=" + getCognomeCliente()+
+                "\ndataInizio=" + dataInizio +
+                "\nnumeroGiorni=" + numeroGiorni +
+                "\nquantitaPrenotata=" + quantitaPrenotata +
+                "\ndataGestione=" + dataGestione +
+                "\nfasciaOraria=" + fasciaOraria +
+                '}';
+    }
+
 }

@@ -82,5 +82,13 @@ public class ServiziGiornalieri extends Servizi implements Prenotabile<Prenotazi
 
         return false;
     }
+
+    public int getDisponibilita() {
+        return disponibilita;
+    }
+
+    public Map<LocalDate, Integer> getPrenotazioniPerData() {
+        return prenotazioniPerData;
+    }
 }
 

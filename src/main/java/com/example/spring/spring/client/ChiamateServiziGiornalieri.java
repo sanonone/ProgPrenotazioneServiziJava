@@ -88,11 +88,11 @@ public class ChiamateServiziGiornalieri {
         }
     }
 
-    public List<Utente> getAllServiziGiornalieri() {
+    public List<ServiziGiornalieri> getAllServiziGiornalieri() {
         try {
-            System.out.println("\nChiamata a GET " + SERVER_URL + "/serviziGiornalieri");
+            //System.out.println("\nChiamata a GET " + SERVER_URL + "/serviziGiornalieri");
             String url = SERVER_URL + "/serviziGiornalieri";
-            System.out.println("\nChiamata a GET " + url);
+            //System.out.println("\nChiamata a GET " + url);
 
             // Configurazione dell'ObjectMapper per gestire correttamente le date
             objectMapper.registerModule(new JavaTimeModule());
@@ -110,7 +110,7 @@ public class ChiamateServiziGiornalieri {
 
             // Controlliamo se la chiamata ha avuto successo (codice 2xx)
             if (responseGetServiziGiornalieri.statusCode() >= 200 && responseGetServiziGiornalieri.statusCode() < 300) {
-                System.out.println("Risposta dal server (utenti): " + responseGetServiziGiornalieri.body());
+                //System.out.println("Risposta dal server (utenti): " + responseGetServiziGiornalieri.body());
                 return objectMapper.readValue(responseGetServiziGiornalieri.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, ServiziGiornalieri.class));
             } else {
                 System.err.println("Errore nella chiamata /utenti: Codice " + responseGetServiziGiornalieri.statusCode());

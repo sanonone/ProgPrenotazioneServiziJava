@@ -27,7 +27,7 @@ public class ChiamateCliente {
 
 
 
-    public void creaCliente(String nome, String cognome, int eta, int telefono, String email){
+    public Cliente creaCliente(String nome, String cognome, int eta, long telefono, String email){
         try{
             System.out.println("\nChiamata a POST " + SERVER_URL + "/clienti/create");
             Cliente nuovoCliente = new Cliente(nome, cognome, eta, telefono,email);
@@ -51,13 +51,16 @@ public class ChiamateCliente {
 
                 System.out.println("Status Code: " + response.statusCode());
                 System.out.println("Response Body: " + response.body());
+                return objectMapper.readValue(response.body(), Cliente.class);
             } catch (IOException e) {
                 e.printStackTrace();
+                return null;
             }
 
         }
         catch(Exception e){
             System.out.println("Errore nella creazione del cliente: " + e.getMessage());
+            return null;
         }
     }
 

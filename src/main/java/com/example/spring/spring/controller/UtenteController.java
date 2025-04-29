@@ -82,7 +82,7 @@ public class UtenteController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody String userAndPassword) throws JsonProcessingException {
+    public ResponseEntity<Utente> login(@RequestBody String userAndPassword) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
@@ -105,7 +105,7 @@ public class UtenteController {
 
         List<Utente> utentiDB = utenteRepository.findAll().stream().filter(utente -> utente.getUsername().equals(user)).toList();
         if(utentiDB.isEmpty()){
-            return new ResponseEntity<>("Utente non trovato",HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Utente utenteDB = utentiDB.getFirst();
         System.out.println("LOG: Utente trovato: " + utenteDB.toString());
@@ -116,10 +116,10 @@ public class UtenteController {
         // Controlli se la password è corretta
         if (result.verified) {
             System.out.println("Password corretta!");
-            return new ResponseEntity<>("Login effettuato correttamente (in un'app vera tornerebbe un JWT Token per fare le altre chiamate e bla bla)",HttpStatus.OK);
+            return new ResponseEntity<>(utenteDB,HttpStatus.OK);
         } else {
             System.out.println("Password sbagliata!");
-            return new ResponseEntity<>("Errore durante il login, username o password errati",HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
 

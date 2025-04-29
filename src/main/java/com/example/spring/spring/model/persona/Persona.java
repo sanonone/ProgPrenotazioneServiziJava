@@ -15,12 +15,12 @@ public abstract class Persona {
     @JsonProperty("eta")
     private int eta;
     @JsonProperty("telefono")
-    private int telefono;
+    private long telefono;
 
     public Persona() {
     }
 
-    public Persona( String nome, String cognome, int eta, int telefono) {
+    public Persona( String nome, String cognome, int eta, long telefono) {
         //this.id = id;
         this.nome = nome;
         this.cognome = cognome;
@@ -45,7 +45,7 @@ public abstract class Persona {
         return cognome;
     }
 
-    public int getTelefono() {
+    public long getTelefono() {
         return telefono;
     }
 }

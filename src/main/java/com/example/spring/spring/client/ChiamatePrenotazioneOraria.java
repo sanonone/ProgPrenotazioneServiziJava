@@ -2,6 +2,7 @@ package com.example.spring.spring.client;
 
 import com.example.spring.spring.model.prenotazioneServizio.PrenotazioneServizio;
 import com.example.spring.spring.model.prenotazioneServizio.PrenotazioneServizioOrario;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -12,6 +13,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.List;
 
 public class ChiamatePrenotazioneOraria {
 
@@ -66,6 +68,41 @@ public class ChiamatePrenotazioneOraria {
         }
         catch(Exception e){
             System.out.println("Errore nella creazione del servizio: " + e.getMessage());
+        }
+    }
+
+    public List<PrenotazioneServizioOrario> getAllPrenotazioniServiziOrari() {
+        try {
+
+
+            // Configurazione dell'ObjectMapper per gestire correttamente le date
+            objectMapper.registerModule(new JavaTimeModule());
+            objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false); // opzionale
+
+            HttpRequest requestGetPrenotazioni = HttpRequest.newBuilder()
+                    .uri(URI.create(SERVER_URL + "/prenotazioniServiziOrari"))
+                    .GET() // Specifica il metodo GET
+                    .build();
+
+            // Inviamo la richiesta e otteniamo la risposta come Stringa
+            // BodyHandlers.ofString() converte il corpo della risposta in una Stringa Java
+            HttpResponse<String> responseGetPrenotazioniServiziOrari = client.send(requestGetPrenotazioni, HttpResponse.BodyHandlers.ofString());
+
+            // Controlliamo se la chiamata ha avuto successo (codice 2xx)
+            if (responseGetPrenotazioniServiziOrari.statusCode() >= 200 && responseGetPrenotazioniServiziOrari.statusCode() < 300) {
+                System.out.println("Risposta dal server (prenotazioni servizi orari): " + responseGetPrenotazioniServiziOrari.body());
+                return objectMapper.readValue(responseGetPrenotazioniServiziOrari.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, PrenotazioneServizioOrario.class));
+            } else {
+                System.err.println("Errore nella chiamata /prenotazioni orarie: Codice " + responseGetPrenotazioniServiziOrari.statusCode());
+                return null;
+            }
+
+
+
+        } catch (Exception e) {
+            System.out.println("Errore nelle chiamate utenti: " + e.getMessage());
+            return null;
         }
     }
 }

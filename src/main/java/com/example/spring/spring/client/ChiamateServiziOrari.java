@@ -91,7 +91,7 @@ public class ChiamateServiziOrari {
         }
     }
 
-    public List<Utente> getAllServiziOrari() {
+    public List<ServiziOrari> getAllServiziOrari() {
         try {
             System.out.println("\nChiamata a GET " + SERVER_URL + "/serviziOrari");
             String url = SERVER_URL + "/serviziOrari";
@@ -114,7 +114,7 @@ public class ChiamateServiziOrari {
             // Controlliamo se la chiamata ha avuto successo (codice 2xx)
             if (responseGetServiziOrari.statusCode() >= 200 && responseGetServiziOrari.statusCode() < 300) {
                 System.out.println("Risposta dal server (servizi orari): " + responseGetServiziOrari.body());
-                return objectMapper.readValue(responseGetServiziOrari.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, ServiziGiornalieri.class));
+                return objectMapper.readValue(responseGetServiziOrari.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, ServiziOrari.class));
             } else {
                 System.err.println("Errore nella chiamata /serviziOrari: Codice " + responseGetServiziOrari.statusCode());
                 return null;

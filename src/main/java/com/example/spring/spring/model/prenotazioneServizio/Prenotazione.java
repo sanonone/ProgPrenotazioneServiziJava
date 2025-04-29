@@ -50,4 +50,23 @@ public abstract class Prenotazione {
         return idServizio;
     }
 
+    public String getIdCliente() {
+        return idCliente;
+    }
+
+    public String getNomeServizio() {
+        return nomeServizio;
+    }
+
+    public String getNomeCliente() {
+        return nomeCliente;
+    }
+
+    public String getCognomeCliente() {
+        return cognomeCliente;
+    }
+
+    public double getPrezzoTotale() {
+        return prezzoTotale;
+    }
 }

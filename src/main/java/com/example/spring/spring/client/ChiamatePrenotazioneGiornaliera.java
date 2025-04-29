@@ -93,32 +93,30 @@ public class ChiamatePrenotazioneGiornaliera {
         }
     }
 
-    public List<Utente> getAllServiziGiornalieri() {
+    public List<PrenotazioneServizio> getAllPrenotazioniServiziGiornalieri() {
         try {
-            System.out.println("\nChiamata a GET " + SERVER_URL + "/serviziGiornalieri");
-            String url = SERVER_URL + "/serviziGiornalieri";
-            System.out.println("\nChiamata a GET " + url);
+
 
             // Configurazione dell'ObjectMapper per gestire correttamente le date
             objectMapper.registerModule(new JavaTimeModule());
             objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false); // opzionale
 
-            HttpRequest requestGetUtenti = HttpRequest.newBuilder()
-                    .uri(URI.create(SERVER_URL + "/serviziGiornalieri"))
+            HttpRequest requestGetPrenotazioni = HttpRequest.newBuilder()
+                    .uri(URI.create(SERVER_URL + "/prenotazioniServiziGiornalieri"))
                     .GET() // Specifica il metodo GET
                     .build();
 
             // Inviamo la richiesta e otteniamo la risposta come Stringa
             // BodyHandlers.ofString() converte il corpo della risposta in una Stringa Java
-            HttpResponse<String> responseGetServiziGiornalieri = client.send(requestGetUtenti, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> responseGetPrenotazioniServiziGiornalieri = client.send(requestGetPrenotazioni, HttpResponse.BodyHandlers.ofString());
 
             // Controlliamo se la chiamata ha avuto successo (codice 2xx)
-            if (responseGetServiziGiornalieri.statusCode() >= 200 && responseGetServiziGiornalieri.statusCode() < 300) {
-                System.out.println("Risposta dal server (utenti): " + responseGetServiziGiornalieri.body());
-                return objectMapper.readValue(responseGetServiziGiornalieri.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, ServiziGiornalieri.class));
+            if (responseGetPrenotazioniServiziGiornalieri.statusCode() >= 200 && responseGetPrenotazioniServiziGiornalieri.statusCode() < 300) {
+                System.out.println("Risposta dal server (prenotazioni servizi giornalieri): " + responseGetPrenotazioniServiziGiornalieri.body());
+                return objectMapper.readValue(responseGetPrenotazioniServiziGiornalieri.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, PrenotazioneServizio.class));
             } else {
-                System.err.println("Errore nella chiamata /utenti: Codice " + responseGetServiziGiornalieri.statusCode());
+                System.err.println("Errore nella chiamata /utenti: Codice " + responseGetPrenotazioniServiziGiornalieri.statusCode());
                 return null;
             }
 
