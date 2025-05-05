@@ -98,7 +98,7 @@ public class CliClient {
                                     System.err.println("\nScegli il servizio da prenotare, digita il numero corrispondente tra 0 e "+ (ser.size()-1));
                                     System.err.println("999. Esci\n");
                                     sceltaServizio = scanner.nextInt();
-
+                                    scanner.nextLine();
                                 }
 
                                 break;
@@ -159,6 +159,7 @@ public class CliClient {
                                     System.err.println("\nScegli il servizio da prenotare, digita il numero corrispondente tra 0 e "+ (serO.size()-1));
                                     System.err.println("999. Esci\n");
                                     sceltaServizioO = scanner.nextInt();
+                                    scanner.nextLine();
 
                                 }
                                 break;

@@ -30,7 +30,7 @@ public class ServiziGiornalieri extends Servizi implements Prenotabile<Prenotazi
 
     //verifica disponibilità
     public boolean verificaDisponibilita(LocalDate dataInizio, int numeroGiorni, int quantitaPrenotata) {
-        LocalDate dataFine = dataInizio.plusDays(numeroGiorni);
+        LocalDate dataFine = dataInizio.plusDays(numeroGiorni<2?0:numeroGiorni-1);
         LocalDate dataCorrente = dataInizio;
 
         while (!dataCorrente.isAfter(dataFine)) {
@@ -46,7 +46,7 @@ public class ServiziGiornalieri extends Servizi implements Prenotabile<Prenotazi
     }
 
     public void confermaPrenotazione(LocalDate dataInizio, int numeroGiorni, int quantitaPrenotata) {
-        LocalDate dataFine = dataInizio.plusDays(numeroGiorni);
+        LocalDate dataFine = dataInizio.plusDays(numeroGiorni<2?0:numeroGiorni-1);
         LocalDate dataCorrente = dataInizio;
 
         /*

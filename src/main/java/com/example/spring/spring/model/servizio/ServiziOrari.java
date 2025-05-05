@@ -79,7 +79,7 @@ public class ServiziOrari extends Servizi implements Prenotabile<PrenotazioneSer
             return false;
         }
 
-        LocalDate dataFine = data.plusDays(numeroGiorni);
+        LocalDate dataFine = data.plusDays(numeroGiorni<2?0:numeroGiorni-1);
         LocalDate dataCorrente = data;
 
         // Ottieni la chiave stringa per la fascia, che useremo in modo consistente
@@ -127,7 +127,7 @@ public class ServiziOrari extends Servizi implements Prenotabile<PrenotazioneSer
             return;
         }
 
-        LocalDate dataFine = data.plusDays(numeroGiorni);
+        LocalDate dataFine = data.plusDays(numeroGiorni<2?0:numeroGiorni-1);
         LocalDate dataCorrente = data;
 
         while (!dataCorrente.isAfter(dataFine)) {
