@@ -55,11 +55,14 @@ public class UtenteController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
+        //FATTO PER NON INSERIRE GETTER PASSWORD MA POI SONO STATO LO STESSO OBBLIGATO A METTERLO LO STESSO MA NON RICORDO PIÙ PERCHÈ
+        //FORSE PER SERIALIZZARE/DESERIALIZZARE LA CLASSE CON JACKSON
         //converto la stringa in nodo json per poi poter leggere il campo password e fare l'hash
-        JsonNode rootNode = objectMapper.readTree(utente);
+        //JsonNode rootNode = objectMapper.readTree(utente);
 
         // recupero la password
-        String password = rootNode.get("password").asText();
+        //String password = rootNode.get("password").asText();
+        String password = nuovoUtente.getPassword();
 
         // faccio l'hash
         String hashedPassword = BCrypt.withDefaults().hashToString(12, password.toCharArray());

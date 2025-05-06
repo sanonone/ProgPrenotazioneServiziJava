@@ -40,7 +40,50 @@ public class CliClient {
         while (scelta != 0) {
             switch (scelta) {
                 case 1:
+                    Cliente cliente = null;
+                    Boolean ospite = true;
                     System.out.println("Hai scelto di accedere come cliente.");
+                    System.out.println("Effettua il login, se non hai un account registrati o entra come ospite");
+                    System.out.println("1. Accedi");
+                    System.out.println("2. Registrati");
+                    System.out.println("3. Entra come ospite");
+                    int sceltaAccesso = scanner.nextInt();
+                    scanner.nextLine();
+                    if(sceltaAccesso == 1){//login
+                        System.out.println("Inserisci la tua email:");
+                        String mail = scanner.next();
+                        System.out.println("Inserisci la tua password:");
+                        String password = scanner.next();
+                        Cliente cl = chiamateCliente.loginCliente(mail, password);
+                        if (cl != null ) {
+                            cliente=cl;
+                            ospite=false;
+                        }else{
+                            ospite=true;
+                            System.out.println("Email o password errati");
+                            break;
+
+                        }
+                    }else if(sceltaAccesso == 2){//registrati
+                        System.out.println("Inserisci il tuo nome:");
+                        String nome = scanner.nextLine();
+                        System.out.println("Inserisci il tuo cognome:");
+                        String cognome = scanner.nextLine();
+                        System.out.println("Inserisci la tua età:");
+                        int eta = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.println("Inserisci il tuo numero di telefono:");
+                        long telefono = scanner.nextLong();
+                        scanner.nextLine();
+                        System.out.println("Inserisci il tuo indirizzo email:");
+                        String email = scanner.nextLine();
+                        System.out.println("Inserisci la password:");
+                        String password = scanner.nextLine();
+                        Cliente cl = chiamateCliente.creaCliente(nome, cognome, eta, telefono, email,password);
+                        cliente = cl;
+                    }else if(sceltaAccesso == 3) {//ospite
+                        ospite = true;
+                    }
                     System.out.println("Scegli un'opzione:");
                     System.out.println("1. Prenota un servizio giornaliero");
                     System.out.println("2. Prenota un servizio orario");
@@ -68,32 +111,40 @@ public class CliClient {
 
                                 while(sceltaServizio != 999){
                                     System.out.println("Hai scelto di prenotare il servizio numero " + sceltaServizio);
-                                    System.out.println("Inserisci il tuo nome:");
-                                    String nome = scanner.nextLine();
-                                    System.out.println("Inserisci il tuo cognome:");
-                                    String cognome = scanner.nextLine();
-                                    System.out.println("Inserisci la tua età:");
-                                    int eta = scanner.nextInt();
-                                    scanner.nextLine();
-                                    System.out.println("Inserisci il tuo numero di telefono:");
-                                    long telefono = scanner.nextLong();
-                                    scanner.nextLine();
-                                    System.out.println("Inserisci il tuo indirizzo email:");
-                                    String email = scanner.nextLine();
-                                    System.out.println("Inserisci la data di prenotazione (formato: dd/MM/yyyy):");
-                                    String data = scanner.nextLine();
-                                    System.out.println("Inserisci il numero di giorni di prenotazione:");
-                                    int giorni = scanner.nextInt();
-                                    scanner.nextLine();
-                                    System.out.println("Inserisci la quantità da prenotare (da 1 a "+ser.get(sceltaServizio).getDisponibilita()+"):");
-                                    int quantita = scanner.nextInt();
-                                    scanner.nextLine();
-                                    Cliente cliente = chiamateCliente.creaCliente(nome, cognome, eta, telefono, email);
-                                    ServiziGiornalieri servizio = ser.get(sceltaServizio);
-                                    PrenotazioneServizio prenotazione = new PrenotazioneServizio(servizio.getId(), cliente.getId(), servizio.getNome(), cliente.getNome(), cliente.getCognome(), data, giorni, quantita, servizio.getPrezzo()*quantita*giorni);
+                                    if(sceltaAccesso == 3) {//ospite
+                                        System.out.println("Inserisci il tuo nome:");
+                                        String nome = scanner.nextLine();
+                                        System.out.println("Inserisci il tuo cognome:");
+                                        String cognome = scanner.nextLine();
+                                        System.out.println("Inserisci la tua età:");
+                                        System.out.println("Inserisci la data di prenotazione (formato: dd/MM/yyyy):");
+                                        String data = scanner.nextLine();
+                                        System.out.println("Inserisci il numero di giorni di prenotazione:");
+                                        int giorni = scanner.nextInt();
+                                        scanner.nextLine();
+                                        System.out.println("Inserisci la quantità da prenotare (da 1 a " + ser.get(sceltaServizio).getDisponibilita() + "):");
+                                        int quantita = scanner.nextInt();
+                                        scanner.nextLine();
 
-                                    chiamatePrenotazioneGiornaliera.creaPrenotazioneGiornaliera(prenotazione);
+                                        ServiziGiornalieri servizio = ser.get(sceltaServizio);
+                                        PrenotazioneServizio prenotazione = new PrenotazioneServizio(servizio.getId(), "0000", servizio.getNome(), nome, cognome, data, giorni, quantita, servizio.getPrezzo() * quantita * giorni);
 
+                                        chiamatePrenotazioneGiornaliera.creaPrenotazioneGiornaliera(prenotazione);
+                                    }else{
+                                        System.out.println("Inserisci la data di prenotazione (formato: dd/MM/yyyy):");
+                                        String data = scanner.nextLine();
+                                        System.out.println("Inserisci il numero di giorni di prenotazione:");
+                                        int giorni = scanner.nextInt();
+                                        scanner.nextLine();
+                                        System.out.println("Inserisci la quantità da prenotare (da 1 a " + ser.get(sceltaServizio).getDisponibilita() + "):");
+                                        int quantita = scanner.nextInt();
+                                        scanner.nextLine();
+
+                                        ServiziGiornalieri servizio = ser.get(sceltaServizio);
+                                        PrenotazioneServizio prenotazione = new PrenotazioneServizio(servizio.getId(), cliente.getId(), servizio.getNome(), cliente.getNome(), cliente.getCognome(), data, giorni, quantita, servizio.getPrezzo() * quantita * giorni);
+
+                                        chiamatePrenotazioneGiornaliera.creaPrenotazioneGiornaliera(prenotazione);
+                                    }
 
                                     System.err.println("\nScegli il servizio da prenotare, digita il numero corrispondente tra 0 e "+ (ser.size()-1));
                                     System.err.println("999. Esci\n");
@@ -122,39 +173,55 @@ public class CliClient {
 
                                 while(sceltaServizioO != 999){
                                     System.out.println("Hai scelto di prenotare il servizio numero " + sceltaServizioO);
-                                    System.out.println("Inserisci il tuo nome:");
-                                    String nome = scanner.nextLine();
-                                    System.out.println("Inserisci il tuo cognome:");
-                                    String cognome = scanner.nextLine();
-                                    System.out.println("Inserisci la tua età:");
-                                    int eta = scanner.nextInt();
-                                    scanner.nextLine();
-                                    System.out.println("Inserisci il tuo numero di telefono:");
-                                    long telefono = scanner.nextLong();
-                                    scanner.nextLine();
-                                    System.out.println("Inserisci il tuo indirizzo email:");
-                                    String email = scanner.nextLine();
-                                    System.out.println("Inserisci la data di prenotazione (formato: dd/MM/yyyy):");
-                                    String data = scanner.nextLine();
-                                    System.out.println("Inserisci il numero di giorni di prenotazione:");
-                                    int giorni = scanner.nextInt();
-                                    scanner.nextLine();
-                                    System.out.println("Inserisci la quantità da prenotare (da 1 a "+serO.get(sceltaServizioO).getDisponibilitaPerFascia()+"):");
-                                    int quantita = scanner.nextInt();
-                                    scanner.nextLine();
-                                    System.out.println("\nInserisci il numero della fascia oraria (da 0 a "+serO.get(sceltaServizioO).getFasceOrarie().size()+")");
-                                    int i;
-                                    for(i=0; i<serO.get(sceltaServizioO).getFasceOrarie().size(); i++){
-                                        System.out.println(i+") "+serO.get(sceltaServizioO).getFasceOrarie().get(i).getStart()+"-"+serO.get(sceltaServizioO).getFasceOrarie().get(i).getEnd());
+                                    if(sceltaAccesso == 3) {//ospite
+                                        System.out.println("Inserisci il tuo nome:");
+                                        String nome = scanner.nextLine();
+                                        System.out.println("Inserisci il tuo cognome:");
+                                        String cognome = scanner.nextLine();
+                                        System.out.println("Inserisci la data di prenotazione (formato: dd/MM/yyyy):");
+                                        String data = scanner.nextLine();
+                                        System.out.println("Inserisci il numero di giorni di prenotazione:");
+                                        int giorni = scanner.nextInt();
+                                        scanner.nextLine();
+                                        System.out.println("Inserisci la quantità da prenotare (da 1 a "+serO.get(sceltaServizioO).getDisponibilitaPerFascia()+"):");
+                                        int quantita = scanner.nextInt();
+                                        scanner.nextLine();
+                                        System.out.println("\nInserisci il numero della fascia oraria (da 0 a "+serO.get(sceltaServizioO).getFasceOrarie().size()+")");
+                                        int i;
+                                        for(i=0; i<serO.get(sceltaServizioO).getFasceOrarie().size(); i++){
+                                            System.out.println(i+") "+serO.get(sceltaServizioO).getFasceOrarie().get(i).getStart()+"-"+serO.get(sceltaServizioO).getFasceOrarie().get(i).getEnd());
+                                        }
+                                        int fasciaSelezionata = scanner.nextInt();
+                                        //Cliente cliente = chiamateCliente.creaCliente(nome, cognome, eta, telefono, email,"pass");
+                                        ServiziOrari servizio = serO.get(sceltaServizioO);
+                                        TimeInterval fasciaOraria= new TimeInterval(servizio.getFasceOrarie().get(fasciaSelezionata).getStart(),servizio.getFasceOrarie().get(fasciaSelezionata).getEnd());
+                                        PrenotazioneServizioOrario prenotazione = new PrenotazioneServizioOrario(servizio.getId(), "0000", servizio.getNome(), nome, cognome, data, giorni, quantita, servizio.getPrezzo()*quantita*giorni, fasciaOraria);
+
+                                        chiamatePrenotazioneOraria.creaPrenotazioneOraria(prenotazione);
+
+
+                                    }else{
+                                        System.out.println("Inserisci la data di prenotazione (formato: dd/MM/yyyy):");
+                                        String data = scanner.nextLine();
+                                        System.out.println("Inserisci il numero di giorni di prenotazione:");
+                                        int giorni = scanner.nextInt();
+                                        scanner.nextLine();
+                                        System.out.println("Inserisci la quantità da prenotare (da 1 a "+serO.get(sceltaServizioO).getDisponibilitaPerFascia()+"):");
+                                        int quantita = scanner.nextInt();
+                                        scanner.nextLine();
+                                        System.out.println("\nInserisci il numero della fascia oraria (da 0 a "+serO.get(sceltaServizioO).getFasceOrarie().size()+")");
+                                        int i;
+                                        for(i=0; i<serO.get(sceltaServizioO).getFasceOrarie().size(); i++){
+                                            System.out.println(i+") "+serO.get(sceltaServizioO).getFasceOrarie().get(i).getStart()+"-"+serO.get(sceltaServizioO).getFasceOrarie().get(i).getEnd());
+                                        }
+                                        int fasciaSelezionata = scanner.nextInt();
+                                        //Cliente cliente = chiamateCliente.creaCliente(nome, cognome, eta, telefono, email,"pass");
+                                        ServiziOrari servizio = serO.get(sceltaServizioO);
+                                        TimeInterval fasciaOraria= new TimeInterval(servizio.getFasceOrarie().get(fasciaSelezionata).getStart(),servizio.getFasceOrarie().get(fasciaSelezionata).getEnd());
+                                        PrenotazioneServizioOrario prenotazione = new PrenotazioneServizioOrario(servizio.getId(), cliente.getId(), servizio.getNome(), cliente.getNome(), cliente.getCognome(), data, giorni, quantita, servizio.getPrezzo()*quantita*giorni, fasciaOraria);
+
+                                        chiamatePrenotazioneOraria.creaPrenotazioneOraria(prenotazione);
                                     }
-                                    int fasciaSelezionata = scanner.nextInt();
-                                    Cliente cliente = chiamateCliente.creaCliente(nome, cognome, eta, telefono, email);
-                                    ServiziOrari servizio = serO.get(sceltaServizioO);
-                                    TimeInterval fasciaOraria= new TimeInterval(servizio.getFasceOrarie().get(fasciaSelezionata).getStart(),servizio.getFasceOrarie().get(fasciaSelezionata).getEnd());
-                                    PrenotazioneServizioOrario prenotazione = new PrenotazioneServizioOrario(servizio.getId(), cliente.getId(), servizio.getNome(), cliente.getNome(), cliente.getCognome(), data, giorni, quantita, servizio.getPrezzo()*quantita*giorni, fasciaOraria);
-
-                                    chiamatePrenotazioneOraria.creaPrenotazioneOraria(prenotazione);
-
 
                                     System.err.println("\nScegli il servizio da prenotare, digita il numero corrispondente tra 0 e "+ (serO.size()-1));
                                     System.err.println("999. Esci\n");
