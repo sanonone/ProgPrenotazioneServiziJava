@@ -35,7 +35,7 @@ public class CliClient {
         System.out.println("0. Esci");
 
         Scanner scanner = new Scanner(System.in);
-        scelta = scanner.nextInt();
+        scelta = safeNextInt(scanner);
 
         while (scelta != 0) {
             switch (scelta) {
@@ -47,8 +47,8 @@ public class CliClient {
                     System.out.println("1. Accedi");
                     System.out.println("2. Registrati");
                     System.out.println("3. Entra come ospite");
-                    int sceltaAccesso = scanner.nextInt();
-                    scanner.nextLine();
+                    int sceltaAccesso = safeNextInt(scanner);
+
                     if(sceltaAccesso == 1){//login
                         System.out.println("Inserisci la tua email:");
                         String mail = scanner.next();
@@ -70,8 +70,8 @@ public class CliClient {
                         System.out.println("Inserisci il tuo cognome:");
                         String cognome = scanner.nextLine();
                         System.out.println("Inserisci la tua età:");
-                        int eta = scanner.nextInt();
-                        scanner.nextLine();
+                        int eta = safeNextInt(scanner);
+
                         System.out.println("Inserisci il tuo numero di telefono:");
                         long telefono = scanner.nextLong();
                         scanner.nextLine();
@@ -88,8 +88,8 @@ public class CliClient {
                     System.out.println("1. Prenota un servizio giornaliero");
                     System.out.println("2. Prenota un servizio orario");
                     System.out.println("999. Esci");
-                    int sceltaCliente = scanner.nextInt();
-                    scanner.nextLine();
+                    int sceltaCliente = safeNextInt(scanner);
+
                     while (sceltaCliente != 999) {
                         switch (sceltaCliente) {
                             case 1:
@@ -102,8 +102,8 @@ public class CliClient {
                                 });
                                 System.err.println("\nScegli il servizio da prenotare, digita il numero corrispondente tra 0 e "+ (ser.size()-1));
                                 System.err.println("999. Esci\n");
-                                int sceltaServizio = scanner.nextInt();
-                                scanner.nextLine();
+                                int sceltaServizio = safeNextInt(scanner);
+
                                 if(sceltaServizio<0 || sceltaServizio>(ser.size()-1) && sceltaServizio != 999){
                                     System.out.println("Hai inserito un numero non valido");
                                     break;
@@ -117,14 +117,15 @@ public class CliClient {
                                         System.out.println("Inserisci il tuo cognome:");
                                         String cognome = scanner.nextLine();
                                         System.out.println("Inserisci la tua età:");
+                                        int eta = safeNextInt(scanner);
                                         System.out.println("Inserisci la data di prenotazione (formato: dd/MM/yyyy):");
                                         String data = scanner.nextLine();
                                         System.out.println("Inserisci il numero di giorni di prenotazione:");
-                                        int giorni = scanner.nextInt();
-                                        scanner.nextLine();
+                                        int giorni = safeNextInt(scanner);
+
                                         System.out.println("Inserisci la quantità da prenotare (da 1 a " + ser.get(sceltaServizio).getDisponibilita() + "):");
-                                        int quantita = scanner.nextInt();
-                                        scanner.nextLine();
+                                        int quantita = safeNextInt(scanner);
+
 
                                         ServiziGiornalieri servizio = ser.get(sceltaServizio);
                                         PrenotazioneServizio prenotazione = new PrenotazioneServizio(servizio.getId(), "0000", servizio.getNome(), nome, cognome, data, giorni, quantita, servizio.getPrezzo() * quantita * giorni);
@@ -134,11 +135,11 @@ public class CliClient {
                                         System.out.println("Inserisci la data di prenotazione (formato: dd/MM/yyyy):");
                                         String data = scanner.nextLine();
                                         System.out.println("Inserisci il numero di giorni di prenotazione:");
-                                        int giorni = scanner.nextInt();
-                                        scanner.nextLine();
+                                        int giorni = safeNextInt(scanner);
+
                                         System.out.println("Inserisci la quantità da prenotare (da 1 a " + ser.get(sceltaServizio).getDisponibilita() + "):");
-                                        int quantita = scanner.nextInt();
-                                        scanner.nextLine();
+                                        int quantita = safeNextInt(scanner);
+
 
                                         ServiziGiornalieri servizio = ser.get(sceltaServizio);
                                         PrenotazioneServizio prenotazione = new PrenotazioneServizio(servizio.getId(), cliente.getId(), servizio.getNome(), cliente.getNome(), cliente.getCognome(), data, giorni, quantita, servizio.getPrezzo() * quantita * giorni);
@@ -148,8 +149,8 @@ public class CliClient {
 
                                     System.err.println("\nScegli il servizio da prenotare, digita il numero corrispondente tra 0 e "+ (ser.size()-1));
                                     System.err.println("999. Esci\n");
-                                    sceltaServizio = scanner.nextInt();
-                                    scanner.nextLine();
+                                    sceltaServizio = safeNextInt(scanner);
+
                                 }
 
                                 break;
@@ -164,8 +165,8 @@ public class CliClient {
                                 });
                                 System.err.println("\nScegli il servizio da prenotare, digita il numero corrispondente tra 0 e "+ (serO.size()-1));
                                 System.err.println("999. Esci\n");
-                                int sceltaServizioO = scanner.nextInt();
-                                scanner.nextLine();
+                                int sceltaServizioO = safeNextInt(scanner);
+
                                 if(sceltaServizioO<0 || sceltaServizioO>(serO.size()-1) && sceltaServizioO != 999){
                                     System.out.println("Hai inserito un numero non valido");
                                     break;
@@ -181,17 +182,17 @@ public class CliClient {
                                         System.out.println("Inserisci la data di prenotazione (formato: dd/MM/yyyy):");
                                         String data = scanner.nextLine();
                                         System.out.println("Inserisci il numero di giorni di prenotazione:");
-                                        int giorni = scanner.nextInt();
-                                        scanner.nextLine();
+                                        int giorni = safeNextInt(scanner);
+
                                         System.out.println("Inserisci la quantità da prenotare (da 1 a "+serO.get(sceltaServizioO).getDisponibilitaPerFascia()+"):");
-                                        int quantita = scanner.nextInt();
-                                        scanner.nextLine();
+                                        int quantita = safeNextInt(scanner);
+
                                         System.out.println("\nInserisci il numero della fascia oraria (da 0 a "+serO.get(sceltaServizioO).getFasceOrarie().size()+")");
                                         int i;
                                         for(i=0; i<serO.get(sceltaServizioO).getFasceOrarie().size(); i++){
                                             System.out.println(i+") "+serO.get(sceltaServizioO).getFasceOrarie().get(i).getStart()+"-"+serO.get(sceltaServizioO).getFasceOrarie().get(i).getEnd());
                                         }
-                                        int fasciaSelezionata = scanner.nextInt();
+                                        int fasciaSelezionata = safeNextInt(scanner);
                                         //Cliente cliente = chiamateCliente.creaCliente(nome, cognome, eta, telefono, email,"pass");
                                         ServiziOrari servizio = serO.get(sceltaServizioO);
                                         TimeInterval fasciaOraria= new TimeInterval(servizio.getFasceOrarie().get(fasciaSelezionata).getStart(),servizio.getFasceOrarie().get(fasciaSelezionata).getEnd());
@@ -204,17 +205,17 @@ public class CliClient {
                                         System.out.println("Inserisci la data di prenotazione (formato: dd/MM/yyyy):");
                                         String data = scanner.nextLine();
                                         System.out.println("Inserisci il numero di giorni di prenotazione:");
-                                        int giorni = scanner.nextInt();
-                                        scanner.nextLine();
+                                        int giorni = safeNextInt(scanner);
+
                                         System.out.println("Inserisci la quantità da prenotare (da 1 a "+serO.get(sceltaServizioO).getDisponibilitaPerFascia()+"):");
-                                        int quantita = scanner.nextInt();
-                                        scanner.nextLine();
+                                        int quantita = safeNextInt(scanner);
+
                                         System.out.println("\nInserisci il numero della fascia oraria (da 0 a "+serO.get(sceltaServizioO).getFasceOrarie().size()+")");
                                         int i;
                                         for(i=0; i<serO.get(sceltaServizioO).getFasceOrarie().size(); i++){
                                             System.out.println(i+") "+serO.get(sceltaServizioO).getFasceOrarie().get(i).getStart()+"-"+serO.get(sceltaServizioO).getFasceOrarie().get(i).getEnd());
                                         }
-                                        int fasciaSelezionata = scanner.nextInt();
+                                        int fasciaSelezionata = safeNextInt(scanner);
                                         //Cliente cliente = chiamateCliente.creaCliente(nome, cognome, eta, telefono, email,"pass");
                                         ServiziOrari servizio = serO.get(sceltaServizioO);
                                         TimeInterval fasciaOraria= new TimeInterval(servizio.getFasceOrarie().get(fasciaSelezionata).getStart(),servizio.getFasceOrarie().get(fasciaSelezionata).getEnd());
@@ -225,8 +226,8 @@ public class CliClient {
 
                                     System.err.println("\nScegli il servizio da prenotare, digita il numero corrispondente tra 0 e "+ (serO.size()-1));
                                     System.err.println("999. Esci\n");
-                                    sceltaServizioO = scanner.nextInt();
-                                    scanner.nextLine();
+                                    sceltaServizioO = safeNextInt(scanner);
+
 
                                 }
                                 break;
@@ -235,8 +236,8 @@ public class CliClient {
                         System.out.println("1. Prenota un servizio giornaliero");
                         System.out.println("2. Prenota un servizio orario");
                         System.out.println("999. Esci");
-                        sceltaCliente = scanner.nextInt();
-                        scanner.nextLine();
+                        sceltaCliente = safeNextInt(scanner);
+
                     }
                     if (sceltaCliente == 999) {
                         break;
@@ -261,7 +262,7 @@ public class CliClient {
                         System.out.println("5. Visualizza tutte le prenotazioni per servizi giornalieri");
                         System.out.println("6. Visualizza tutte le prenotazioni per servizi orari");
                         System.out.println("0. Esci\n");
-                        sceltaUtente = scanner.nextInt();
+                        sceltaUtente = safeNextInt(scanner);
 
                         while (sceltaUtente != 0) {
                             switch (sceltaUtente) {
@@ -275,7 +276,7 @@ public class CliClient {
                                     });
                                     System.err.println("\nPer visualizzare i dettagli di un servizio e/o gestirne l'eliminazione digita il numero corrispondente tra 0 e "+ (ser.size()-1));
                                     System.err.println("999. Esci\n");
-                                    int sceltaServizio = scanner.nextInt();
+                                    int sceltaServizio = safeNextInt(scanner);
                                     if(sceltaServizio<0 || sceltaServizio>(ser.size()-1) && sceltaServizio != 999){
                                         System.out.println("Hai inserito un numero non valido");
                                         break;
@@ -289,6 +290,7 @@ public class CliClient {
                                         System.out.println("y = Si");
                                         System.out.println("n || invio = No");
                                         char risposta = scanner.next().charAt(0);
+                                        scanner.nextLine();
                                         if (risposta == 'y') {
                                             chiamateServiziGiornalieri.deleteServizioGiornaliero(ser.get(sceltaServizio).getId());
                                             ser.remove(sceltaServizio);
@@ -303,7 +305,7 @@ public class CliClient {
 
                                         System.err.println("Inserisci il numero di un altro servizio tra 0 e "+(ser.size()-1)+" per vedere i dettagli");
                                         System.err.println("999. Esci\n");
-                                        sceltaServizio = scanner.nextInt();
+                                        sceltaServizio = safeNextInt(scanner);
 
                                         //dopo l'eliminazione continuava ad accettare l'indice del servizio eliminato cusando crash
                                         if(sceltaServizio<0 || sceltaServizio>(ser.size()-1) && sceltaServizio != 999){
@@ -328,7 +330,7 @@ public class CliClient {
                                     });
                                     System.err.println("\nPer visualizzare i dettagli di un servizio digita il numero corrispondente tra 0 e "+ (serO.size()-1));
                                     System.err.println("999. Esci\n");
-                                    int sceltaServizioO = scanner.nextInt();
+                                    int sceltaServizioO = safeNextInt(scanner);
                                     if(sceltaServizioO<0 || sceltaServizioO>(serO.size()-1) && sceltaServizioO != 999){
                                         System.out.println("Hai inserito un numero non valido");
                                         break;
@@ -343,6 +345,7 @@ public class CliClient {
                                         System.out.println("y = Si");
                                         System.out.println("n || invio = No");
                                         char risposta = scanner.next().charAt(0);
+                                        scanner.nextLine();
                                         if (risposta == 'y') {
                                             chiamateServiziOrari.deleteServizioOrario(serO.get(sceltaServizioO).getId());
                                             serO.remove(sceltaServizioO);
@@ -355,7 +358,7 @@ public class CliClient {
 
                                         System.err.println("Inserisci il numero di un altro servizio tra 0 e "+(serO.size()-1)+" per vedere i dettagli");
                                         System.err.println("999. Esci\n");
-                                        sceltaServizioO = scanner.nextInt();
+                                        sceltaServizioO = safeNextInt(scanner);
 
                                         //dopo l'eliminazione continuava ad accettare l'indice del servizio eliminato cusando crash
                                         if(sceltaServizioO<0 || sceltaServizioO>(serO.size()-1) && sceltaServizioO != 999){
@@ -371,29 +374,29 @@ public class CliClient {
 
                                     break;
                                 case 3:
-                                    scanner.nextLine();
+
                                     System.out.println("Hai scelto di creare un nuovo servizio giornaliero.");
                                     System.out.println("Inserisci il nome del servizio:");
                                     String nomeServizio = scanner.nextLine();
                                     System.out.println("Inserisci la descrizione del servizio:");
                                     String descrizione = scanner.nextLine();
                                     System.out.println("Inserisci il numero di posti disponibili:");
-                                    int postiDisponibili = scanner.nextInt();
+                                    int postiDisponibili = safeNextInt(scanner);
                                     System.out.println("Inserisci il prezzo giornaliero del servizio");
                                     double prezzo = scanner.nextDouble();
                                     chiamateServiziGiornalieri.creaServizioGiornaliero(nomeServizio,descrizione,prezzo,postiDisponibili);
 
                                     break;
                                 case 4:
-                                    scanner.nextLine();
+
                                     System.out.println("Hai scelto di creare un nuovo servizio orario.");
                                     System.out.println("Inserisci il nome del servizio:");
                                     String nomeServizioOrario = scanner.nextLine();
                                     System.out.println("Inserisci la descrizione del servizio:");
                                     String descrizioneServizioOrario = scanner.nextLine();
                                     System.out.println("Quante fasce orarie vuoi aggiungere per questo servizio? Inserisci 0 per inserire tre fasce orario di default, altrimenti inserisci il numero di fasce da inserire:");
-                                    int numFasce=scanner.nextInt();
-                                    scanner.nextLine();
+                                    int numFasce=safeNextInt(scanner);
+
                                     List<TimeInterval> fasceOrarie = new ArrayList<>();
                                     if(numFasce==0){
                                         fasceOrarie=null;
@@ -413,7 +416,7 @@ public class CliClient {
                                         }
                                     }
                                     System.out.println("Inserisci il numero di posti disponibili per ogni fascia oraria:");
-                                    int postiDisponibiliServizioOrario = scanner.nextInt();
+                                    int postiDisponibiliServizioOrario = safeNextInt(scanner);
                                     System.out.println("Inserisci il prezzo per fascia oraria del servizio");
                                     double prezzoServizioOrario = scanner.nextDouble();
                                     chiamateServiziOrari.creaServizioOrario(nomeServizioOrario,descrizioneServizioOrario,prezzoServizioOrario,fasceOrarie,postiDisponibiliServizioOrario);
@@ -431,7 +434,7 @@ public class CliClient {
                                     });
                                     System.err.println("\nPer visualizzare i dettagli della prenotazione digita il numero corrispondente tra 0 e "+ (prG.size()-1));
                                     System.err.println("999. Esci\n");
-                                    int sceltaPrenotazioneGiornaliera = scanner.nextInt();
+                                    int sceltaPrenotazioneGiornaliera = safeNextInt(scanner);
                                     if(sceltaPrenotazioneGiornaliera<0 || sceltaPrenotazioneGiornaliera>(prG.size()-1) && sceltaPrenotazioneGiornaliera != 999){
                                         System.out.println("Hai inserito un numero non valido");
                                         break;
@@ -444,7 +447,7 @@ public class CliClient {
 
                                         System.err.println("Inserisci il numero di un' altra prenotazione per vedere i dettagli");
                                         System.err.println("999. Esci\n");
-                                        sceltaPrenotazioneGiornaliera = scanner.nextInt();
+                                        sceltaPrenotazioneGiornaliera = safeNextInt(scanner);
 
                                     }
 
@@ -461,7 +464,7 @@ public class CliClient {
                                     });
                                     System.err.println("\nPer visualizzare i dettagli della prenotazione digita il numero corrispondente tra 0 e "+ (prO.size()-1));
                                     System.err.println("999. Esci\n");
-                                    int sceltaPrenotazioneOrarie = scanner.nextInt();
+                                    int sceltaPrenotazioneOrarie = safeNextInt(scanner);
                                     if(sceltaPrenotazioneOrarie<0 || sceltaPrenotazioneOrarie>(prO.size()-1) && sceltaPrenotazioneOrarie != 999){
                                         System.out.println("Hai inserito un numero non valido");
                                         break;
@@ -474,7 +477,7 @@ public class CliClient {
 
                                         System.err.println("Inserisci il numero di un' altra prenotazione per vedere i dettagli");
                                         System.err.println("999. Esci\n");
-                                        sceltaPrenotazioneOrarie = scanner.nextInt();
+                                        sceltaPrenotazioneOrarie = safeNextInt(scanner);
 
                                     }
 
@@ -491,7 +494,7 @@ public class CliClient {
                             System.out.println("5. Visualizza tutte le prenotazioni per servizi giornalieri");
                             System.out.println("6. Visualizza tutte le prenotazioni per servizi orari");
                             System.out.println("0. Esci");
-                            sceltaUtente = scanner.nextInt();
+                            sceltaUtente = safeNextInt(scanner);
                         }
                         ut=null;
 
@@ -510,7 +513,7 @@ public class CliClient {
             System.out.println("2. Accedi come utente");
             System.out.println("0. Esci");
 
-            scelta = scanner.nextInt();
+            scelta = safeNextInt(scanner);
 
             }
 
@@ -518,12 +521,12 @@ public class CliClient {
 
 
     public static int safeNextInt(Scanner scanner) {
-        while (true) {
+        while (true) {//per gestire l'eccezione anche n volte di seguito
             String input = scanner.nextLine();
             try {
                 return Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                System.out.print("Input non valido. Inserisci un numero intero: ");
+                System.out.print("Input non valido.\nInserisci un numero intero: ");
             }
         }
     }
