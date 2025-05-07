@@ -254,8 +254,8 @@ public class CliClient {
                         System.out.println("Benvenuto " + ut.getUsername());
                         int sceltaUtente;
                         System.out.println("Scegli un'opzione:");
-                        System.out.println("1. Visualizza i servizi giornalieri presenti");
-                        System.out.println("2. Visualizza i servizi orari presenti");
+                        System.out.println("1. Visualizza i servizi giornalieri presenti");//aggiungere delete
+                        System.out.println("2. Visualizza i servizi orari presenti");//aggiungere delete
                         System.out.println("3. Crea un nuovo servizio giornaliero");
                         System.out.println("4. Crea un nuovo servizio orario");
                         System.out.println("5. Visualizza tutte le prenotazioni per servizi giornalieri");
@@ -273,7 +273,7 @@ public class CliClient {
                                         System.out.println(contatore+")\nNome: " + servizio.getNome()+"\nDescrizione: "+servizio.getDescrizione());
                                         contatore.getAndIncrement();
                                     });
-                                    System.err.println("\nPer visualizzare i dettagli di un servizio digita il numero corrispondente tra 0 e "+ (ser.size()-1));
+                                    System.err.println("\nPer visualizzare i dettagli di un servizio e/o gestirne l'eliminazione digita il numero corrispondente tra 0 e "+ (ser.size()-1));
                                     System.err.println("999. Esci\n");
                                     int sceltaServizio = scanner.nextInt();
                                     if(sceltaServizio<0 || sceltaServizio>(ser.size()-1) && sceltaServizio != 999){
@@ -285,10 +285,31 @@ public class CliClient {
                                         System.out.println("Hai scelto di visualizzare i dettagli del servizio numero " + sceltaServizio);
 
                                         System.out.println(ser.get(sceltaServizio).getNome()+"\nDescrizione: "+ ser.get(sceltaServizio).getDescrizione()+"\nPrezzo: "+ser.get(sceltaServizio).getPrezzo()+"€\nDisponibilità: " + ser.get(sceltaServizio).getDisponibilita()+"\nPrenotazioni: "+ser.get(sceltaServizio).getPrenotazioniPerData()+"\n");
+                                        System.out.println("Desideri eliminare il servizio?");
+                                        System.out.println("y = Si");
+                                        System.out.println("n || invio = No");
+                                        char risposta = scanner.next().charAt(0);
+                                        if (risposta == 'y') {
+                                            chiamateServiziGiornalieri.deleteServizioGiornaliero(ser.get(sceltaServizio).getId());
+                                            ser.remove(sceltaServizio);
+                                            System.out.println("Servizio eliminato con successo!");
+                                        }else if(risposta == 'n'){
+                                            System.out.println("Hai scelto di non eliminare il servizio");
+                                        }else{
+                                            System.out.println("Hai inserito una risposta non valida\n");
+                                        }
 
-                                        System.err.println("Inserisci il numero di un altro servizio per vedere i dettagli");
+
+
+                                        System.err.println("Inserisci il numero di un altro servizio tra 0 e "+(ser.size()-1)+" per vedere i dettagli");
                                         System.err.println("999. Esci\n");
                                         sceltaServizio = scanner.nextInt();
+
+                                        //dopo l'eliminazione continuava ad accettare l'indice del servizio eliminato cusando crash
+                                        if(sceltaServizio<0 || sceltaServizio>(ser.size()-1) && sceltaServizio != 999){
+                                            System.out.println("Hai inserito un numero non valido");
+                                            break;
+                                        }
 
                                     }
 
@@ -318,9 +339,29 @@ public class CliClient {
 
                                         System.out.println(serO.get(sceltaServizioO).getNome()+"\nDescrizione: "+ serO.get(sceltaServizioO).getDescrizione()+"\nPrezzo: "+serO.get(sceltaServizioO).getPrezzo()+"€\nDisponibilità per fascia: " + serO.get(sceltaServizioO).getDisponibilitaPerFascia()+"\nFasce orario: " + serO.get(sceltaServizioO).getFasceOrarie() +"\nPrenotazioni: "+serO.get(sceltaServizioO).getPrenotazioni()+"\n");
 
-                                        System.err.println("Inserisci il numero di un altro servizio per vedere i dettagli");
+                                        System.out.println("Desideri eliminare il servizio?");
+                                        System.out.println("y = Si");
+                                        System.out.println("n || invio = No");
+                                        char risposta = scanner.next().charAt(0);
+                                        if (risposta == 'y') {
+                                            chiamateServiziOrari.deleteServizioOrario(serO.get(sceltaServizioO).getId());
+                                            serO.remove(sceltaServizioO);
+                                            System.out.println("Servizio eliminato con successo!");
+                                        }else if(risposta == 'n'){
+                                            System.out.println("Hai scelto di non eliminare il servizio");
+                                        }else{
+                                            System.out.println("Hai inserito una risposta non valida\n");
+                                        }
+
+                                        System.err.println("Inserisci il numero di un altro servizio tra 0 e "+(serO.size()-1)+" per vedere i dettagli");
                                         System.err.println("999. Esci\n");
                                         sceltaServizioO = scanner.nextInt();
+
+                                        //dopo l'eliminazione continuava ad accettare l'indice del servizio eliminato cusando crash
+                                        if(sceltaServizioO<0 || sceltaServizioO>(serO.size()-1) && sceltaServizioO != 999){
+                                            System.out.println("Hai inserito un numero non valido");
+                                            break;
+                                        }
 
                                     }
 
@@ -474,4 +515,16 @@ public class CliClient {
             }
 
         }
+
+
+    public static int safeNextInt(Scanner scanner) {
+        while (true) {
+            String input = scanner.nextLine();
+            try {
+                return Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.print("Input non valido. Inserisci un numero intero: ");
+            }
+        }
+    }
     }

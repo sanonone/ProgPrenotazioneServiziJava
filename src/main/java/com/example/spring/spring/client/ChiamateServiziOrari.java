@@ -128,14 +128,14 @@ public class ChiamateServiziOrari {
         }
     }
 
-    public void deleteServizioGiornaliero(String id) {
+    public void deleteServizioOrario(String id) {
         try {
 
-            String url = SERVER_URL + "/serviziGiornalieri/" + id;
+            String url = SERVER_URL + "/serviziOrari/" + id;
             System.out.println("\nChiamata a DELETE " + url);
 
             HttpRequest reqDelete = HttpRequest.newBuilder()
-                    .uri(URI.create(SERVER_URL + "/serviziGiornalieri/"+id))
+                    .uri(URI.create(SERVER_URL + "/serviziOrari/"+id))
                     .DELETE()
                     .build();
 
@@ -146,7 +146,7 @@ public class ChiamateServiziOrari {
                 System.err.println("Errore nella chiamata /serviziGiornalieri/delete: Codice " + resDelete.statusCode());
             }
         } catch (Exception e) {
-            System.out.println("Errore nella creazione del cliente: " + e.getMessage());
+            System.out.println("Errore nella eliminazione del servizio: " + e.getMessage());
         }
     }
 }
