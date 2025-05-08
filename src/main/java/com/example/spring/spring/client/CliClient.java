@@ -248,6 +248,7 @@ public class CliClient {
                     String username = scanner.next();
                     System.out.println("Inserisci la tua password:");
                     String password = scanner.next();
+                    scanner.nextLine();
                     Utente ut = chiamateUtente.loginUtente(username, password);
                     if (ut != null ) {
                         System.out.println("Login effettuato con successo!");
