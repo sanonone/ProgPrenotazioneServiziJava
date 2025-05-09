@@ -23,10 +23,8 @@ public class SchedulingThreadPulizia {
     @Autowired
     private SerOrarioRepository serOrarioRepository;
 
-    /**
-     * Task schedulato da Spring che avvia un nuovo thread manuale ogni minuto.
-     */
-    @Scheduled(fixedRate = 120000) // Esegui questo metodo ogni 20 sec
+    //Task schedulato da Spring che avvia un nuovo thread manuale ogni minuto.
+    @Scheduled(fixedRate = 20000) // Esegui questo metodo ogni 20 sec
     public void avvioThreadPulizia(){
         System.out.println("\n\nAvvio ThreadPulizia a " + LocalDateTime.now());
 

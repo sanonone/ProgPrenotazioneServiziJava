@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 import java.io.IOException;
 
-public class TimeIntervalKeySerializer extends JsonSerializer<TimeInterval> {
+public class TimeIntervalKeySerializer extends JsonSerializer<TimeInterval> {//Classe fatta perchè jackson mi dava problemi a serializzare TimeInterval
     @Override
     public void serialize(TimeInterval value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         gen.writeFieldName(value.toString());

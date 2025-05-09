@@ -45,7 +45,6 @@ public abstract class Servizi {
     public String getDescrizione() {
         return descrizione;
     }
-
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
     }

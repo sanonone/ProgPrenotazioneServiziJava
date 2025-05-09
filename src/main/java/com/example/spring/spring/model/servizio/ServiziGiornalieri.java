@@ -29,7 +29,7 @@ public class ServiziGiornalieri extends Servizi implements Prenotabile<Prenotazi
     }
 
     //verifica disponibilità
-    public boolean verificaDisponibilita(LocalDate dataInizio, int numeroGiorni, int quantitaPrenotata) {
+    public boolean verificaDisponibilita(LocalDate dataInizio, int numeroGiorni, int quantitaPrenotata) {//itera le date e controlla se la quantità prenotata è disponibile
         LocalDate dataFine = dataInizio.plusDays(numeroGiorni<2?0:numeroGiorni-1);
         LocalDate dataCorrente = dataInizio;
 
@@ -45,7 +45,7 @@ public class ServiziGiornalieri extends Servizi implements Prenotabile<Prenotazi
         return true; // Disponibile per tutte le date
     }
 
-    public void confermaPrenotazione(LocalDate dataInizio, int numeroGiorni, int quantitaPrenotata) {
+    public void confermaPrenotazione(LocalDate dataInizio, int numeroGiorni, int quantitaPrenotata) {//aggiorna la mappa delle prenotazioniPerData del servizio con date e quantità prenotate
         LocalDate dataFine = dataInizio.plusDays(numeroGiorni<2?0:numeroGiorni-1);
         LocalDate dataCorrente = dataInizio;
 
@@ -53,8 +53,7 @@ public class ServiziGiornalieri extends Servizi implements Prenotabile<Prenotazi
             Se la dataCorrente è già presente come chiave nella mappa, restituisce il valore associato (che è il numero corrente di prenotazioni per quella data).
             Se la dataCorrente non è ancora presente come chiave nella mappa, restituisce il valore predefinito specificato, che in questo caso è 0.
             Questo significa che se non ci sono ancora prenotazioni per quella data, si parte da zero.
-
-            + 1: A questo valore (il numero corrente di prenotazioni o 0 se non presente) viene aggiunto 1, poiché stiamo confermando una nuova prenotazione per questa data.
+.
          */
 
         while (!dataCorrente.isAfter(dataFine)) {

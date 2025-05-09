@@ -24,7 +24,6 @@ public class Utente extends Persona {
     @JsonProperty("dataAssunzione")
     private LocalDate dataAssunzione;
 
-    SerGiornalieroRepository serGiornalieroRepository;
 
     public Utente() {//per json con conjackson
         super();
@@ -59,55 +58,13 @@ public class Utente extends Persona {
         return password;
     }
 
-    /*
-    @Override
-    public ServiziGiornalieri creaServizioGiornaliero(String nome, String descrizione, double prezzo, int disponibilita) {
-        // ... implementazione ...
-        ServiziGiornalieri servizio = new ServiziGiornalieri(nome, descrizione, prezzo, disponibilita);
-        return servizio;
-        //serGiornalieroRepository.save(servizio);
-
+    public String getRuolo() {
+        return ruolo;
     }
 
-
-
-    @Override
-    public List<ServiziGiornalieri> visualizzaServiziGiornalieriCreati() {
-        // ... implementazione ...
-        List<ServiziGiornalieri> servizi=serGiornalieroRepository.findAll();
-        return servizi;
+    public LocalDate getDataAssunzione() {
+        return dataAssunzione;
     }
 
-    @Override
-    public void modificaServizioGiornaliero(ServiziGiornalieri servizio) {
-        // ... implementazione ...
-        ServiziGiornalieri servizioDaModificare = serGiornalieroRepository.findById(servizio.getId()).orElse(null);
-        if(servizioDaModificare != null){
-            serGiornalieroRepository.save(servizio);
-        }
-        else{
-            System.out.println("Servizio da modificare non trovato");
-        }
-    }
-
-    @Override
-    public void eliminaServizioGiornaliero(String id) {
-        // ... implementazione ...
-        if(serGiornalieroRepository.existsById(id)) {
-            serGiornalieroRepository.deleteById(id);
-            System.out.println("Servizio eliminato");
-        }
-        else{
-            System.out.println("Servizio non trovato");
-        }
-    }
-
-    @Override
-    public ServiziGiornalieri servizioGiornalieroById(String id) {
-        // ... implementazione ...
-        ServiziGiornalieri servizio = serGiornalieroRepository.findById(id).orElse(null);
-        return servizio;
-    }
-*/
 
 }

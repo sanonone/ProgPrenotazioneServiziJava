@@ -20,8 +20,7 @@ public class TimeInterval {
     }
 
     public TimeInterval(LocalTime start, LocalTime end) {
-        // Aggiungiamo un controllo di validità: l'inizio non può essere dopo o uguale alla fine
-        // (questo non gestisce intervalli che scavalcano la mezzanotte, vedi nota sotto)
+        //controllo di validità: l'inizio non può essere dopo o uguale alla fine
         if (start == null || end == null || !start.isBefore(end)) {
             throw new IllegalArgumentException("L'orario di inizio deve essere precedente all'orario di fine.");
         }
@@ -48,13 +47,9 @@ public class TimeInterval {
 
     /**
      * Verifica se questo intervallo di tempo si sovrappone con un altro intervallo.
-     * La sovrapposizione avviene se start1 < end2 E start2 < end1.
-     * L'estremo finale dell'intervallo è considerato escluso.
-     *
-     * @param other L'altro intervallo di tempo da confrontare.
-     * @return true se gli intervalli si sovrappongono, false altrimenti.
+     * La sovrapposizione avviene se start1 < end2 E start2 < end1
      */
-    public boolean overlaps(TimeInterval other) {
+    public boolean overlaps(TimeInterval other) {//metodo implementato all'inizio ma poi non usato
         if (other == null) {
             return false;
         }
@@ -78,6 +73,7 @@ public class TimeInterval {
         return Objects.equals(start, that.start) && Objects.equals(end, that.end);
     }
 
+    /*
     @Override
     public int hashCode() {
         return Objects.hash(start, end);
@@ -95,39 +91,7 @@ public class TimeInterval {
         return new TimeInterval(startTime, endTime);
     }
 
-
-    /*
-    Esempio uso
-
-    // Creazione degli intervalli usando LocalTime.of o il parsing
-        TimeInterval intervalloA = new TimeInterval(LocalTime.of(6, 0), LocalTime.of(10, 0)); // 06:00 - 10:00
-        TimeInterval intervalloB = TimeInterval.parse("10:00 - 12:00"); // 10:00 - 12:00
-        TimeInterval intervalloC = TimeInterval.parse("09:00 - 11:00"); // 09:00 - 11:00 (sovrapposto ad A e B)
-        TimeInterval intervalloD = TimeInterval.parse("14:00 - 16:00"); // 14:00 - 16:00 (non sovrapposto)
-        TimeInterval intervalloE = TimeInterval.parse("07:00 - 09:00"); // 07:00 - 09:00 (sovrapposto ad A)
-
-        System.out.println("Intervallo A: " + intervalloA);
-        System.out.println("Intervallo B: " + intervalloB);
-        System.out.println("Intervallo C: " + intervalloC);
-        System.out.println("Intervallo D: " + intervalloD);
-        System.out.println("Intervallo E: " + intervalloE);
-        System.out.println("--- Confronti ---");
-
-        // Caso utente: A e B non si sovrappongono perché toccano solo l'estremo
-        System.out.printf("%s si sovrappone a %s? %b\n", intervalloA, intervalloB, intervalloA.overlaps(intervalloB)); // false
-
-        // Caso sovrapposizione parziale: A e C
-        System.out.printf("%s si sovrappone a %s? %b\n", intervalloA, intervalloC, intervalloA.overlaps(intervalloC)); // true (dalle 09:00 alle 10:00)
-
-        // Caso sovrapposizione parziale: B e C
-        System.out.printf("%s si sovrappone a %s? %b\n", intervalloB, intervalloC, intervalloB.overlaps(intervalloC)); // true (dalle 10:00 alle 11:00)
-
-        // Caso nessuna sovrapposizione: A e D
-        System.out.printf("%s si sovrappone a %s? %b\n", intervalloA, intervalloD, intervalloA.overlaps(intervalloD)); // false
-
-         // Caso E è contenuto in A
-        System.out.printf("%s si sovrappone a %s? %b\n", intervalloA, intervalloE, intervalloA.overlaps(intervalloE)); // true
-        System.out.printf("%s si sovrappone a %s? %b\n", intervalloE, intervalloA, intervalloE.overlaps(intervalloA)); // true
-
      */
+
+
 }
