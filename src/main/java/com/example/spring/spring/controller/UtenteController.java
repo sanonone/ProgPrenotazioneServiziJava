@@ -39,7 +39,7 @@ public class UtenteController {
         }
     }
     @PostMapping("/create")
-    public ResponseEntity<Utente> createUtente(@RequestBody String utente) throws JsonProcessingException {
+    public ResponseEntity<Utente> createUtente(@RequestBody String utente) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
@@ -47,31 +47,40 @@ public class UtenteController {
         System.out.println("LOG: Ricevuto oggetto: " + utente.toString()); // Stampa l'oggetto ricevuto
 
         System.out.println("Cliente ricevuto: " + utente.toString());
-        Utente nuovoUtente = objectMapper.readValue(utente, Utente.class);
 
-        //controllo non ci siano altri utenti nel database con lo stesso username
-        List<Utente> utentiDB = utenteRepository.findAll().stream().filter(utDB -> utDB.getUsername().equals(nuovoUtente.getUsername())).toList();
-        if(!utentiDB.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        try{
+            Utente nuovoUtente = objectMapper.readValue(utente, Utente.class);
+
+            //controllo non ci siano altri utenti nel database con lo stesso username
+            List<Utente> utentiDB = utenteRepository.findAll().stream().filter(utDB -> utDB.getUsername().equals(nuovoUtente.getUsername())).toList();
+            if(!utentiDB.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
+
+            //FATTO PER NON INSERIRE GETTER PASSWORD MA POI SONO STATO LO STESSO OBBLIGATO A METTERLO LO STESSO MA NON RICORDO PIÙ PERCHÈ
+            //FORSE PER SERIALIZZARE/DESERIALIZZARE LA CLASSE CON JACKSON
+            //converto la stringa in nodo json per poi poter leggere il campo password e fare l'hash
+            //JsonNode rootNode = objectMapper.readTree(utente);
+
+            // recupero la password
+            //String password = rootNode.get("password").asText();
+            String password = nuovoUtente.getPassword();
+
+            // faccio l'hash
+            String hashedPassword = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+            nuovoUtente.setPassword(hashedPassword);
+
+            utenteRepository.save(nuovoUtente);
+            //gestoreClienti.creaCliente(nuovoUtente);
+
+            return new ResponseEntity<>(nuovoUtente, HttpStatus.CREATED);
+
+        } catch (JsonProcessingException e) {
+            System.out.println("LOG: Errore durante la conversione dell'oggetto: " + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        //FATTO PER NON INSERIRE GETTER PASSWORD MA POI SONO STATO LO STESSO OBBLIGATO A METTERLO LO STESSO MA NON RICORDO PIÙ PERCHÈ
-        //FORSE PER SERIALIZZARE/DESERIALIZZARE LA CLASSE CON JACKSON
-        //converto la stringa in nodo json per poi poter leggere il campo password e fare l'hash
-        //JsonNode rootNode = objectMapper.readTree(utente);
 
-        // recupero la password
-        //String password = rootNode.get("password").asText();
-        String password = nuovoUtente.getPassword();
-
-        // faccio l'hash
-        String hashedPassword = BCrypt.withDefaults().hashToString(12, password.toCharArray());
-        nuovoUtente.setPassword(hashedPassword);
-
-        utenteRepository.save(nuovoUtente);
-        //gestoreClienti.creaCliente(nuovoUtente);
-
-        return new ResponseEntity<>(nuovoUtente, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
@@ -85,45 +94,52 @@ public class UtenteController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Utente> login(@RequestBody String userAndPassword) throws JsonProcessingException {
+    public ResponseEntity<Utente> login(@RequestBody String userAndPassword) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
-        //converto la stringa in nodo json per poi poter leggere i campi user e password
-        JsonNode rootNode = objectMapper.readTree(userAndPassword);
 
-        System.out.println("recupero dati utente");
-        // recupero l'utente
-        String user = rootNode.get("username").asText();
-        // recupero la password
-        String password = rootNode.get("password").asText();
+        try{
+            //converto la stringa in nodo json per poi poter leggere i campi user e password
+            JsonNode rootNode = objectMapper.readTree(userAndPassword);
+
+            System.out.println("recupero dati utente");
+            // recupero l'utente
+            String user = rootNode.get("username").asText();
+            // recupero la password
+            String password = rootNode.get("password").asText();
 
 
-        //controllo password valida
-        //BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hash);
-        //boolean valid = result.verified;
+            //controllo password valida
+            //BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hash);
+            //boolean valid = result.verified;
 
-        System.out.println("recupero dati utente dal db mongo");
+            System.out.println("recupero dati utente dal db mongo");
 
-        List<Utente> utentiDB = utenteRepository.findAll().stream().filter(utente -> utente.getUsername().equals(user)).toList();
-        if(utentiDB.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            List<Utente> utentiDB = utenteRepository.findAll().stream().filter(utente -> utente.getUsername().equals(user)).toList();
+            if(utentiDB.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            Utente utenteDB = utentiDB.getFirst();
+            System.out.println("LOG: Utente trovato: " + utenteDB.toString());
+
+            // Verifica
+            BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), utenteDB.getPassword());
+
+            // Controlli se la password è corretta
+            if (result.verified) {
+                System.out.println("Password corretta!");
+                return new ResponseEntity<>(utenteDB,HttpStatus.OK);
+            } else {
+                System.out.println("Password sbagliata!");
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (JsonProcessingException e) {
+            System.out.println("Errore durante la conversione dell'oggetto: " + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Utente utenteDB = utentiDB.getFirst();
-        System.out.println("LOG: Utente trovato: " + utenteDB.toString());
 
-        // Verifica
-        BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), utenteDB.getPassword());
-
-        // Controlli se la password è corretta
-        if (result.verified) {
-            System.out.println("Password corretta!");
-            return new ResponseEntity<>(utenteDB,HttpStatus.OK);
-        } else {
-            System.out.println("Password sbagliata!");
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
 
 
 

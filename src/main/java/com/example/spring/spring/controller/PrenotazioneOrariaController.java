@@ -55,7 +55,8 @@ public class PrenotazioneOrariaController {
             }
 
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            System.out.println("Errore durante la conversione dell'oggetto: " + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
 

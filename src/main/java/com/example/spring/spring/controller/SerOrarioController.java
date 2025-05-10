@@ -39,7 +39,7 @@ public class SerOrarioController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ServiziOrari> createServizioOrario(@RequestBody String servizio) throws JsonProcessingException {
+    public ResponseEntity<ServiziOrari> createServizioOrario(@RequestBody String servizio) {
         ObjectMapper objectMapper = new ObjectMapper();
         // Configura l'ObjectMapper per gestire correttamente le date
         //altrimenti avevo errore durante la conversione in JSON
@@ -49,11 +49,18 @@ public class SerOrarioController {
         System.out.println("LOG: Ricevuto oggetto: " + servizio.toString()); // Stampa l'oggetto ricevuto
 
         System.out.println("Servizio ricevuto: " + servizio.toString());
-        ServiziOrari nuovoServizio = objectMapper.readValue(servizio, ServiziOrari.class);
-        serOrarioRepository.save(nuovoServizio);
-        //gestoreClienti.creaCliente(nuovoCliente);
 
-        return new ResponseEntity<>(nuovoServizio, HttpStatus.CREATED);
+        try {
+            ServiziOrari nuovoServizio = objectMapper.readValue(servizio, ServiziOrari.class);
+            serOrarioRepository.save(nuovoServizio);
+            //gestoreClienti.creaCliente(nuovoCliente);
+
+            return new ResponseEntity<>(nuovoServizio, HttpStatus.CREATED);
+        } catch (JsonProcessingException e) {
+            System.out.println("Errore durante la conversione dell'oggetto: " + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @DeleteMapping("/{id}")
@@ -64,10 +71,9 @@ public class SerOrarioController {
         }
         serOrarioRepository.deleteById(id);
         //return ResponseEntity.noContent().build(); // 204
-        return new ResponseEntity<>("Servizio orario eliminato correttamente",HttpStatus.OK);
+        return new ResponseEntity<>("Servizio orario eliminato correttamente", HttpStatus.OK);
 
     }
-
 
 
 }

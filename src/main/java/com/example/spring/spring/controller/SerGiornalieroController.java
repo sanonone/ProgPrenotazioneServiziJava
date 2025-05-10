@@ -1,7 +1,5 @@
 package com.example.spring.spring.controller;
 
-import com.example.spring.spring.model.persona.Cliente;
-import com.example.spring.spring.model.persona.Utente;
 import com.example.spring.spring.model.servizio.ServiziGiornalieri;
 import com.example.spring.spring.mongoHelper.SerGiornalieroRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -39,7 +37,7 @@ public class SerGiornalieroController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ServiziGiornalieri> createServizioGiornaliero(@RequestBody String servizio) throws JsonProcessingException {
+    public ResponseEntity<ServiziGiornalieri> createServizioGiornaliero(@RequestBody String servizio) {
         ObjectMapper objectMapper = new ObjectMapper();
         // Configura l'ObjectMapper per gestire correttamente le date
         //altrimenti avevo errore durante la conversione in JSON
@@ -49,11 +47,18 @@ public class SerGiornalieroController {
         System.out.println("LOG: Ricevuto oggetto: " + servizio.toString()); // Stampa l'oggetto ricevuto
 
         System.out.println("Servizio ricevuto: " + servizio.toString());
-        ServiziGiornalieri nuovoServizio = objectMapper.readValue(servizio, ServiziGiornalieri.class);
-        serGiornalieroRepository.save(nuovoServizio);
-        //gestoreClienti.creaCliente(nuovoCliente);
 
-        return new ResponseEntity<>(nuovoServizio, HttpStatus.CREATED);
+        try{
+            ServiziGiornalieri nuovoServizio = objectMapper.readValue(servizio, ServiziGiornalieri.class);
+            serGiornalieroRepository.save(nuovoServizio);
+            //gestoreClienti.creaCliente(nuovoCliente);
+
+            return new ResponseEntity<>(nuovoServizio, HttpStatus.CREATED);
+        } catch(JsonProcessingException e){
+            System.out.println("Errore durante la conversione dell'oggetto: " + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @DeleteMapping("/{id}")
