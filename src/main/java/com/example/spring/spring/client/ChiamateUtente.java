@@ -31,7 +31,7 @@ public class ChiamateUtente {
     ObjectMapper objectMapper = new ObjectMapper();
 
 
-    public void creaUtente(String nome, String cognome, int eta, int telefono, String username, String password, String ruolo, String dataAssunzione){
+    public Utente creaUtente(String nome, String cognome, int eta, long telefono, String username, String password, String ruolo, String dataAssunzione){
         try{
             System.out.println("\nChiamata a POST " + SERVER_URL + "/utenti/create");
             Utente nuovoUtente = new Utente(nome, cognome, eta, telefono,username,password,ruolo,dataAssunzione);
@@ -58,13 +58,16 @@ public class ChiamateUtente {
 
                 System.out.println("Status Code: " + response.statusCode());
                 System.out.println("Response Body: " + response.body());
+                return objectMapper.readValue(response.body(), Utente.class);
             } catch (IOException e) {
                 e.printStackTrace();
+                return null;
             }
 
         }
         catch(Exception e){
             System.out.println("Errore nella creazione del cliente: " + e.getMessage());
+            return null;
         }
     }
 

@@ -29,7 +29,7 @@ public class Utente extends Persona {
         super();
     }
 
-    public Utente(String nome, String cognome, int eta, int telefono, String username, String password, String ruolo, String dataAssunzione) {
+    public Utente(String nome, String cognome, int eta, long telefono, String username, String password, String ruolo, String dataAssunzione) {
         super(nome, cognome, eta, telefono);
         this.username = username;
         this.password = password;

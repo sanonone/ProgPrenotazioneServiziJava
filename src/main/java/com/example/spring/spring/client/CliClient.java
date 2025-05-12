@@ -244,12 +244,53 @@ public class CliClient {
                     }
                 case 2:
                     System.out.println("Hai scelto di accedere come utente.");
-                    System.out.println("Inserisci il tuo username:");
-                    String username = scanner.next();
-                    System.out.println("Inserisci la tua password:");
-                    String password = scanner.next();
-                    scanner.nextLine();
-                    Utente ut = chiamateUtente.loginUtente(username, password);
+                    /// ///////////////////////////////////////
+                    Utente ut = null;
+                    System.out.println("Effettua il login o registrati se non hai un account ");
+                    System.out.println("1. Accedi");
+                    System.out.println("2. Registrati");
+
+                    int sceltaAccessoUt = safeNextInt(scanner);
+
+                    if(sceltaAccessoUt == 1){//login
+                        System.out.println("Inserisci il tuo username:");
+                        String username = scanner.next();
+                        System.out.println("Inserisci la tua password:");
+                        String password = scanner.next();
+                        scanner.nextLine();
+                        Utente utenteLogin = chiamateUtente.loginUtente(username, password);
+
+                        if (utenteLogin != null ) {
+                            ut=utenteLogin;
+                        }else{
+                            System.out.println("Username o password errati");
+                            break;
+
+                        }
+                    }else if(sceltaAccessoUt == 2){//registrati
+                        System.out.println("Inserisci il tuo nome:");
+                        String nome = scanner.nextLine();
+                        System.out.println("Inserisci il tuo cognome:");
+                        String cognome = scanner.nextLine();
+                        System.out.println("Inserisci la tua età:");
+                        int eta = safeNextInt(scanner);
+
+                        System.out.println("Inserisci il tuo numero di telefono:");
+                        long telefono = scanner.nextLong();
+                        scanner.nextLine();
+                        System.out.println("Inserisci l'username che userai per il login:");
+                        String username = scanner.nextLine();
+                        System.out.println("Inserisci la password:");
+                        String password = scanner.nextLine();
+                        System.out.println("Inserisci il tuo ruolo:");
+                        String ruolo = scanner.nextLine();
+                        System.out.println("Inserisci la data di assunzione nel formato (dd/mm/yyyy):");
+                        String dataAssunzione = scanner.nextLine();
+                        Utente utenteRegistrazione = chiamateUtente.creaUtente(nome, cognome, eta, telefono, username,password, ruolo, dataAssunzione);
+                        ut = utenteRegistrazione;
+                    }
+
+
                     if (ut != null ) {
                         System.out.println("Login effettuato con successo!");
 
